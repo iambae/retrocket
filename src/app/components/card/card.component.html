@@ -1,0 +1,24 @@
+<li
+  class="card"
+  [attr.card-id]="card.id"
+  [attr.card-order]="card.order"
+  (click)="editCard()"
+>
+  <textarea
+    #cardContentEdit
+    [style.display]="isEditing ? '' : 'none'"
+    (keydown)="blurOnEnter($event)"
+    (blur)="updateCard()"
+    [(ngModel)]="card.text"
+  ></textarea>
+  <span
+    id="cardContent"
+    #cardContent
+    [style.display]="isEditing ? 'none' : ''"
+    (click)="captureCardSize()"
+    ><span
+      >{{ card.text }}
+      <i class="delete fas fa-times-circle" (click)="onCardDelete()"></i>
+    </span>
+  </span>
+</li>

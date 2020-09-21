@@ -1,0 +1,18 @@
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row">
+        <div class="col-xl-3 col-lg-6" *ngFor="let column of columns$ | async">
+          <app-column-header [column]="column"></app-column-header>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-fluid mt--7">
+  <div class="row mt-5">
+    <div class="col-xl-3 col-lg-6" *ngFor="let column of columns$ | async">
+      <app-column [column]="column"></app-column>
+    </div>
+  </div>
+</div>

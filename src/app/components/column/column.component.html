@@ -1,0 +1,52 @@
+<div class="card card-stats mb-4 mb-xl-0">
+  <div class="card-body">
+    <div
+      class="column"
+      [attr.column-id]="column.id"
+      [attr.column-order]="column.order"
+    >
+      <div class="column-header" [style.textAlign]="'center'">
+        <h4
+          class="card-title text-uppercase text-muted mb-0"
+          [innerHtml]="column.title"
+          [style.display]="isEditingTitle ? 'none' : ''"
+          (click)="editColumn()"
+        ></h4>
+        <input
+          [style.display]="isEditingTitle ? '' : 'none'"
+          (blur)="updateColumnOnBlur()"
+          (keyup)="updateColumnOnEnter($event)"
+          [(ngModel)]="column.title"
+        />
+      </div>
+      <div class="card-list" [attr.column-id]="column.id">
+        <div *ngFor="let card of cards$ | async">
+          <app-card
+            [card]="card"
+            [columnId]="column.id"
+            (cardUpdate)="updateCard($event)"
+            (cardDelete)="deleteCard($event)"
+          ></app-card>
+        </div>
+      </div>
+      <div class="add-card" (click)="enableAddCard()">
+        <i [style.margin-right]="'10px'" class="fas fa-plus-circle"></i>
+        <textarea
+          #newCardInput
+          [ngStyle]="{
+            display: isAddingCard ? '' : 'none',
+            overflow: 'hidden',
+            resize: 'none',
+            'min-width': '100%',
+            'min-height': '30px',
+            'max-height': '200px'
+          }"
+          [attr.autofocus]="isAddingCard"
+          (keyup)="addCardOnEnter($event)"
+          (blur)="addCardOnBlur()"
+          [(ngModel)]="newCardText"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+</div>
