@@ -1,6 +1,6 @@
 import { Observable } from "rxjs";
 import { Component, OnInit } from "@angular/core";
-import { Column } from "src/app/models/Column";
+import { Column } from "src/app/models/index";
 import { ColumnService } from "src/app/services/column.service";
 
 @Component({

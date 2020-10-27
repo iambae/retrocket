@@ -2,8 +2,7 @@ import { CardService } from "./../../services/card.service";
 import { Component, Input, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 import { map as rxMap } from "rxjs/operators";
-import { Column } from "../../models/Column";
-import { Card } from "../../models/Card";
+import { Column, Card } from "../../models/index";
 
 @Component({
   selector: "app-column-header",

@@ -4,8 +4,7 @@ import { tap } from "rxjs/operators";
 import { v4 as uuidv4 } from "uuid";
 import { Component, Input, OnInit, ElementRef, ViewChild } from "@angular/core";
 import { ColumnService } from "./../../services/column.service";
-import { Card } from "../../models/Card";
-import { Column } from "../../models/Column";
+import { Card, Column } from "../../models/index";
 
 @Component({
   selector: "app-column",

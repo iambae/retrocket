@@ -1,4 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
 .card {
   border: 0px solid rgb(0, 0, 0) !important;
 }
