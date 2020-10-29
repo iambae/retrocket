@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { map as rxMap } from "rxjs/operators";
 import { Observable } from "rxjs";
-import { AngularFirestore } from "angularfire2/firestore";
+import { AngularFirestore } from "@angular/fire/firestore";
 import { Card } from "../models/index";
 
 @Injectable()

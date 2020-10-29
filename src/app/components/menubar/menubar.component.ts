@@ -17,10 +17,10 @@ export const ROUTES: RouteInfo[] = [
 ];
 
 @Component({
-  selector: "app-sidebar",
-  templateUrl: "./sidebar.component.html",
+  selector: "app-menubar",
+  templateUrl: "./menubar.component.html",
 })
-export class SidebarComponent implements OnInit {
+export class MenubarComponent implements OnInit {
   public menuItems: any[];
 
   constructor() {}
