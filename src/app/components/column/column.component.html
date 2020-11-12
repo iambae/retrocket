@@ -9,30 +9,25 @@
         <h4
           class="card-title text-uppercase text-muted mb-0"
           [innerHtml]="column.title"
-          [style.display]="isEditingTitle ? 'none' : ''"
+          [style.display]="isEditingCol ? 'none' : ''"
           (click)="editColumn()"
         ></h4>
         <input
-          [style.display]="isEditingTitle ? '' : 'none'"
+          [style.display]="isEditingCol ? '' : 'none'"
           (blur)="updateColumnOnBlur()"
           (keyup)="updateColumnOnEnter($event)"
           [(ngModel)]="column.title"
         />
       </div>
       <div class="card-list" [attr.column-id]="column.id">
-        <div *ngFor="let card of cards$ | async">
-          <app-card
-            [card]="card"
-            [columnId]="column.id"
-            (cardUpdate)="updateCard($event)"
-            (cardDelete)="deleteCard($event)"
-          ></app-card>
+        <div *ngFor="let card of cards">
+          <app-card [card]="card" (cardEvent)="onCardEvent($event)"></app-card>
         </div>
       </div>
       <div class="add-card" (click)="enableAddCard()">
         <i [style.margin-right]="'10px'" class="fas fa-plus-circle"></i>
         <textarea
-          #newCardInput
+          #cardInputRef
           [ngStyle]="{
             display: isAddingCard ? '' : 'none',
             overflow: 'hidden',
@@ -44,7 +39,7 @@
           [attr.autofocus]="isAddingCard"
           (keyup)="addCardOnEnter($event)"
           (blur)="addCardOnBlur()"
-          [(ngModel)]="newCardText"
+          [(ngModel)]="cardText"
         ></textarea>
       </div>
     </div>

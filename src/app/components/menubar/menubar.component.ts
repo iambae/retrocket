@@ -1,31 +1,36 @@
 import { Component, OnInit } from "@angular/core";
-
-declare interface RouteInfo {
-  path: string;
-  title: string;
-  icon: string;
-  class: string;
-}
-export const ROUTES: RouteInfo[] = [
-  {
-    path: "/dashboard",
-    title: "Dashboard",
-    icon: "fas fa-columns text-primary",
-    class: "",
-  },
-  { path: "/login", title: "Login", icon: "fas fa-key text-info", class: "" },
-];
+import { Observable } from "rxjs";
+import { map as rxMap } from "rxjs/operators";
+import { RouteService } from "../../services/route.service";
+import { Color, Route } from "../../models/index";
+import { ColorService } from "../../services/color.service";
 
 @Component({
   selector: "app-menubar",
   templateUrl: "./menubar.component.html",
 })
 export class MenubarComponent implements OnInit {
-  public menuItems: any[];
+  public routes$: Observable<Route[]>;
+  public colorOptions$: Observable<Color[]>;
+  public selectedColor: Color;
 
-  constructor() {}
+  constructor(
+    private routeService: RouteService,
+    private colorService: ColorService
+  ) {}
 
   ngOnInit() {
-    this.menuItems = ROUTES.filter((menuItem) => menuItem);
+    this.routes$ = this.routeService.getRoutes();
+    this.colorOptions$ = this.colorService.getColors().pipe(
+      rxMap((colors: Color[]) => {
+        this.selectedColor = colors[0];
+        return colors;
+      })
+    );
+  }
+
+  // TODO: handler
+  colorChangeHandler(option) {
+    // this.colorService.switchColor(option);
   }
 }

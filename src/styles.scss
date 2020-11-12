@@ -9,6 +9,36 @@ body {
   user-select: none;
 }
 
+.dropdown {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+button + .dropdown-menu.show {
+  display: flex;
+  padding-right: 8px;
+}
+
+.dropdown-menu.show > .dropdown-item {
+  margin-left: 8px;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.navbar-top.navbar-horizontal > div {
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.navbar-horizontal .navbar-brand img.logo {
+  height: 40px;
+}
+
+.header {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
 .card {
   border: 0px solid rgb(0, 0, 0) !important;
 }

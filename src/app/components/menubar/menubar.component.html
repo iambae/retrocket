@@ -8,28 +8,30 @@
       routerLinkActive="active"
       [routerLink]="['/dashboard']"
     >
-      <img
-        src="./assets/img/brand/retrocket.png"
-        class="navbar-brand-img"
-        alt="..."
-      />
+      <img src="./assets/img/brand/retrocket.png" class="logo" />
     </a>
     <div class="navbar-collapse">
       <ul class="navbar-nav">
         <li
-          *ngFor="let menuItem of menuItems"
-          class="{{ menuItem.class }} nav-item"
+          *ngFor="let route of routes$ | async"
+          class="{{ route.class }} nav-item"
         >
           <a
             routerLinkActive="active"
-            [routerLink]="[menuItem.path]"
+            [routerLink]="[route.path]"
             class="nav-link"
           >
-            <i class="{{ menuItem.icon }}"></i>
-            {{ menuItem.title }}
+            <i class="{{ route.icon }}"></i>
+            {{ route.title }}
           </a>
         </li>
       </ul>
+      <app-menu
+        [colors]="colorOptions$ | async"
+        [color]="selectedColor"
+        (colorChange)="colorChangeHandler($event)"
+      >
+      </app-menu>
     </div>
   </div>
 </nav>

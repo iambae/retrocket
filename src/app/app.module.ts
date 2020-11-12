@@ -7,16 +7,16 @@ import { environment } from "../environments/environment";
 import { AngularFireModule } from "@angular/fire";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppComponent } from "./app.component";
-import { DashboardLayoutComponent } from "./layouts/dashboard-layout/dashboard-layout.component";
-import { LoginLayoutComponent } from "./layouts/login-layout/login-layout.component";
-
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { CardService } from "./services/card.service";
-import { ColumnService } from "./services/column.service";
 import { AppRoutingModule } from "./app-routing.module";
 import { ComponentsModule } from "./components/components.module";
+
+import { CardService } from "./services/card.service";
+import { ColumnService } from "./services/column.service";
+import { RouteService } from "./services/route.service";
+import { ColorService } from "./services/color.service";
 
 @NgModule({
   imports: [
@@ -31,8 +31,8 @@ import { ComponentsModule } from "./components/components.module";
     AngularFirestoreModule,
     AngularFireAuthModule,
   ],
-  declarations: [AppComponent, DashboardLayoutComponent, LoginLayoutComponent],
-  providers: [CardService, ColumnService],
+  declarations: [AppComponent],
+  providers: [CardService, ColumnService, RouteService, ColorService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

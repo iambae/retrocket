@@ -3,19 +3,16 @@ import { map as rxMap } from "rxjs/operators";
 import { Observable } from "rxjs";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Card } from "../models/index";
+import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
 export class CardService {
   constructor(private firestoreService: AngularFirestore) {}
 
-  /** GET: get cards under column with columnId */
-  getCards(columnId: string): Observable<Card[]> {
+  /** GET: get cards in board with boardId */
+  getCards(boardId: string): Observable<Card[]> {
     return this.firestoreService
-      .collection("columns")
-      .doc(columnId)
-      .collection("cards", (collectionRef) =>
-        collectionRef.orderBy("order", "asc")
-      )
+      .collection(`boards/${boardId}/cards`)
       .snapshotChanges()
       .pipe(
         rxMap((changes) =>
@@ -28,22 +25,24 @@ export class CardService {
       );
   }
 
-  /** POST: add a new card under column with columnId */
-  addCard(card: Card, columnId: string) {
+  /** POST: add a new card to board with boardId */
+  addCard(card: Card, boardId: string) {
+    card = { id: uuidv4(), boardId, ...card };
+
     this.firestoreService
-      .collection("columns")
-      .doc(columnId)
-      .collection("cards")
+      .collection(`boards/${boardId}/cards`)
       .doc(card.id)
       .set(card)
-      .then(() => console.log(`Card ${card.id} successfully added!`))
+      .then(() =>
+        console.log(`Card ${card.id} successfully added to board ${boardId}!`)
+      )
       .catch((error) => console.error("Error creating card: ", error));
   }
 
-  /** PUT: update card's content */
-  updateCard(card: Card, columnId: string) {
+  /** PUT: update card's content in board with boardId */
+  updateCard(card: Card, boardId: string) {
     this.firestoreService
-      .doc(`columns/${columnId}/cards/${card.id}`)
+      .doc(`boards/${boardId}/cards/${card.id}`)
       .update({
         text: card.text,
         ...card,
@@ -52,11 +51,11 @@ export class CardService {
       .catch((error) => console.error("Error updating card: ", error));
   }
 
-  /** DELETE: delete card from card with columnId */
-  deleteCard(card: Card, columnId: string) {
+  /** DELETE: delete card from board with boardId */
+  deleteCard(card: Card, boardId: string) {
     this.firestoreService
-      .collection("columns")
-      .doc(columnId)
+      .collection("boards")
+      .doc(boardId)
       .collection("cards")
       .doc(card.id)
       .delete()

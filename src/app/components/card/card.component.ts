@@ -2,12 +2,17 @@ import {
   Component,
   Input,
   ElementRef,
+  EventEmitter,
   ViewChild,
   Renderer2,
   Output,
-  EventEmitter,
 } from "@angular/core";
 import { Card } from "../../models/index";
+
+interface CardEvent {
+  type: string;
+  data: Card;
+}
 
 @Component({
   selector: "app-card",
@@ -18,7 +23,7 @@ import { Card } from "../../models/index";
         display: none;
         color: darkgrey;
       }
-      #cardContent:hover i.delete {
+      #contentRef:hover i.delete {
         display: block;
         position: absolute;
         bottom: 0;
@@ -28,80 +33,79 @@ import { Card } from "../../models/index";
   ],
 })
 export class CardComponent {
-  @ViewChild("cardContent") cardContent: ElementRef;
-  @ViewChild("cardContentEdit") cardContentEdit: ElementRef;
-  @Output() cardDelete = new EventEmitter();
-  @Output() cardUpdate = new EventEmitter();
-  @Input()
-  columnId: string;
-  @Input()
-  card: Card;
-  cardText: string;
+  // Data flow: CardComponent -> ColumnComponent -> DashboardComponent
+  @Output() cardEvent = new EventEmitter<CardEvent>();
+  @Input() card: Card;
+  @ViewChild("contentRef") contentRef: ElementRef;
+  @ViewChild("contentRefEdit") contentRefEdit: ElementRef;
+
+  text: string;
   isEditing = false;
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
-  captureCardSize() {
-    if (this.cardContent && this.cardContentEdit) {
-      var height = `${this.cardContent.nativeElement.offsetHeight}px`;
+  saveSize() {
+    if (this.contentRef && this.contentRefEdit) {
+      var height = `${this.contentRef.nativeElement.offsetHeight}px`;
       this.renderer.setStyle(
-        this.cardContentEdit.nativeElement,
+        this.contentRefEdit.nativeElement,
         "height",
         height
       );
     }
   }
 
-  editCard() {
+  edit() {
     this.isEditing = true;
-    this.cardText = this.card.text;
+    this.text = this.card.text;
 
-    let textArea = this.el.nativeElement.getElementsByTagName("textarea")[0];
+    let textarea = this.el.nativeElement.getElementsByTagName("textarea")[0];
 
     setTimeout(function () {
-      textArea.focus();
+      textarea.focus();
     }, 0);
   }
 
-  clearCardEdit() {
-    this.card.text = this.cardText;
+  blurOnEnter(event) {
+    if (event.key === "Enter") {
+      event.target.blur();
+    } else if (event.key === "Escape") {
+      this.card.text = this.text;
+      this.isEditing = false;
+    }
+  }
+
+  cancelUpdate() {
+    this.card.text = this.text;
     this.isEditing = false;
   }
 
-  blurOnEnter(event) {
-    if (event.keyCode === 13) {
-      event.target.blur();
-    } else if (event.keyCode === 27) {
-      this.card.text = this.cardText;
-      this.isEditing = false;
+  // TODO: Merge with blurOnEnter()?
+  updateOnEnter(event: KeyboardEvent) {
+    if (event.key === "Enter") {
+      this.update();
+    } else if (event.key === "Escape") {
+      this.cancelUpdate();
     }
   }
 
-  updateCardOnEnter(event: KeyboardEvent) {
-    if (event.keyCode === 13) {
-      this.updateCard();
-    } else if (event.keyCode === 27) {
-      this.clearCardEdit();
-    }
-  }
-
-  updateCardOnBlur() {
-    if (this.isEditing) {
-      this.updateCard();
-      this.clearCardEdit();
-    }
-  }
-
-  updateCard() {
+  update() {
     if (this.card.text && this.card.text.trim() !== "") {
-      this.cardUpdate.emit(this.card);
+      this.cardEvent.emit({ type: "update", data: this.card });
       this.isEditing = false;
     } else {
-      this.clearCardEdit();
+      this.cancelUpdate();
     }
   }
 
-  onCardDelete() {
-    this.cardDelete.emit(this.card);
+  updateOnBlur() {
+    if (this.isEditing) {
+      this.update();
+      this.cancelUpdate();
+    }
+  }
+
+  delete() {
+    this.cardEvent.emit({ type: "delete", data: this.card });
   }
 }

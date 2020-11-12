@@ -21,7 +21,7 @@ export class ColumnService {
     );
   }
 
-  /** GET columns from the server */
+  /** GET column configurations */
   getColumns(): Observable<Column[]> {
     this.columns$ = this.columnCollection.snapshotChanges().pipe(
       rxMap((changes) =>
@@ -36,7 +36,7 @@ export class ColumnService {
     return this.columns$;
   }
 
-  /** PUT: update the column on the server */
+  /** PUT: update the column title */
   updateColumn(column: Column) {
     this.columnDoc = this.firestoreService.doc(`columns/${column.id}`);
     this.columnDoc
