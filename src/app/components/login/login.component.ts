@@ -1,23 +1,18 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component } from "@angular/core";
+import { AuthService } from "../../services/auth.service";
 
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
 })
-export class LoginComponent implements OnInit, OnDestroy {
-  constructor() {}
+export class LoginComponent {
+  email: string;
+  password: string;
 
-  ngOnInit() {
-    var html = document.getElementsByTagName("html")[0];
-    html.classList.add("login-layout");
-    var body = document.getElementsByTagName("body")[0];
-    body.classList.add("bg-default");
-  }
+  constructor(public authService: AuthService) {}
 
-  ngOnDestroy() {
-    var html = document.getElementsByTagName("html")[0];
-    html.classList.remove("login-layout");
-    var body = document.getElementsByTagName("body")[0];
-    body.classList.remove("bg-default");
+  login() {
+    this.authService.login(this.email, this.password);
+    this.email = this.password = "";
   }
 }

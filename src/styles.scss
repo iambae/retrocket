@@ -9,6 +9,13 @@ body {
   user-select: none;
 }
 
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+
 .dropdown {
   margin-left: 15px;
   margin-right: 15px;
@@ -30,8 +37,8 @@ button + .dropdown-menu.show {
   margin-top: 20px;
 }
 
-.navbar-horizontal .navbar-brand img.logo {
-  height: 40px;
+.container .navbar-brand img.logo {
+  height: 50px;
 }
 
 .header {

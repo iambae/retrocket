@@ -11,6 +11,7 @@ import { ColumnComponent } from "./column/column.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { LoginComponent } from "./login/login.component";
 import { AddClassDirective } from "../shared/add-class.directive";
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   imports: [CommonModule, RouterModule, NgbModule, FormsModule],
@@ -23,6 +24,7 @@ import { AddClassDirective } from "../shared/add-class.directive";
     ColumnHeaderComponent,
     CardComponent,
     AddClassDirective,
+    RegisterComponent,
   ],
   exports: [
     DashboardComponent,
