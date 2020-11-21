@@ -5,19 +5,21 @@ import { BrowserModule } from "@angular/platform-browser";
 import { Routes, RouterModule } from "@angular/router";
 import { LoginComponent } from "./components/login/login.component";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
+import { DashboardListComponent } from "./components/dashboard/dashboard-list.component";
 
 const routes: Routes = [
+  { path: "boards", component: DashboardListComponent },
+  { path: "boards/:id", component: DashboardComponent },
   { path: "login", component: LoginComponent },
   { path: "register", component: RegisterComponent },
-  { path: "dashboard", component: DashboardComponent },
   {
     path: "",
-    redirectTo: "dashboard",
+    redirectTo: "boards",
     pathMatch: "full",
   },
   {
     path: "**",
-    redirectTo: "dashboard",
+    redirectTo: "boards",
   },
 ];
 
@@ -26,7 +28,7 @@ const routes: Routes = [
     CommonModule,
     BrowserModule,
     RouterModule.forRoot(routes, {
-      useHash: true,
+      onSameUrlNavigation: "reload",
     }),
   ],
   exports: [RouterModule],

@@ -12,6 +12,7 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { LoginComponent } from "./login/login.component";
 import { AddClassDirective } from "../shared/add-class.directive";
 import { RegisterComponent } from "./register/register.component";
+import { DashboardListComponent } from "./dashboard/dashboard-list.component";
 
 @NgModule({
   imports: [
@@ -31,6 +32,7 @@ import { RegisterComponent } from "./register/register.component";
     CardComponent,
     AddClassDirective,
     RegisterComponent,
+    DashboardListComponent,
   ],
   exports: [
     DashboardComponent,

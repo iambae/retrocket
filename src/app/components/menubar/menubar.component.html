@@ -6,7 +6,7 @@
     <a
       class="navbar-brand"
       routerLinkActive="active"
-      [routerLink]="['/dashboard']"
+      [routerLink]="['/boards']"
     >
       <img src="./assets/img/brand/retrocket.png" class="logo" />
     </a>
@@ -27,9 +27,9 @@
         </li>
       </ul>
       <app-menu
-        [colors]="colorOptions$ | async"
-        [color]="selectedColor"
-        (colorChange)="colorChangeHandler($event)"
+        [colors]="colors"
+        [color]="color"
+        (colorChange)="onColorChange($event)"
       >
       </app-menu>
     </div>

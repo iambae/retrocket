@@ -21,27 +21,27 @@ export class ColorService {
 
   /** GET all available colors from the server */
   getColors(): Observable<Color[]> {
-    this.colors$ = this.colorCollection
+    return this.colorCollection
       .snapshotChanges()
       .pipe(
         rxMap((changes) =>
           changes.map((change) => change.payload.doc.data() as Color)
         )
       );
-
-    return this.colors$;
   }
 
   /** GET data for color with colorId from the server */
   getColor(colorId: string): Observable<Color> {
-    const colors = this.firestoreService.doc<Color>(`colors/${colorId}`);
-
-    return colors.snapshotChanges().pipe(
-      rxMap((changes) => {
-        const data = changes.payload.data() as Color;
-        const id = changes.payload.id;
-        return { id, ...data };
-      })
-    );
+    return this.firestoreService
+      .collection("colors")
+      .doc<Color>(colorId)
+      .snapshotChanges()
+      .pipe(
+        rxMap((changes) => {
+          const data = changes.payload.data() as Color;
+          const id = changes.payload.id;
+          return { id, ...data };
+        })
+      );
   }
 }

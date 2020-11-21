@@ -10,9 +10,9 @@ import {
 
 @Injectable()
 export class ColumnService {
-  columnCollection: AngularFirestoreCollection<Column>;
-  columnDoc: AngularFirestoreDocument<Column>;
-  columns$: Observable<Column[]>;
+  private columnCollection: AngularFirestoreCollection<Column>;
+  private columnDoc: AngularFirestoreDocument<Column>;
+  private columns$: Observable<Column[]>;
 
   constructor(private firestoreService: AngularFirestore) {
     this.columnCollection = this.firestoreService.collection(

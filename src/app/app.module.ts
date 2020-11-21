@@ -12,6 +12,7 @@ import { AppComponent } from "./app.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { ComponentsModule } from "./components/components.module";
 
+import { BoardService } from "./services/board.service";
 import { CardService } from "./services/card.service";
 import { ColumnService } from "./services/column.service";
 import { RouteService } from "./services/route.service";
@@ -30,7 +31,13 @@ import { ColorService } from "./services/color.service";
     AngularFireAuthModule,
   ],
   declarations: [AppComponent],
-  providers: [CardService, ColumnService, RouteService, ColorService],
+  providers: [
+    BoardService,
+    CardService,
+    ColumnService,
+    RouteService,
+    ColorService,
+  ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

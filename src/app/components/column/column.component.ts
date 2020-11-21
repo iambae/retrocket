@@ -6,7 +6,7 @@ import {
   ViewChild,
   Output,
 } from "@angular/core";
-import { Column } from "../../models/index";
+import { Column, Card } from "../../models/index";
 
 /**
  * ColumnComponent:
@@ -21,7 +21,7 @@ import { Column } from "../../models/index";
 })
 export class ColumnComponent {
   @Input() column: Column;
-  @Input() cards;
+  @Input() cards: Card[];
   @Output() update = new EventEmitter<Column>();
   @Output() cardEvent = new EventEmitter<any>();
   @ViewChild("cardInputRef") cardInputRef: ElementRef;

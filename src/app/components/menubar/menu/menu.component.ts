@@ -7,13 +7,13 @@ import { Color } from "../../../models/index";
 })
 export class MenuComponent {
   @Input() colors: Color[];
-  @Input() color: Color;
   @Output() colorChange: EventEmitter<Color> = new EventEmitter<Color>();
+  @Input("color") selectedColor: Color;
 
   constructor() {}
 
-  switchColor(color) {
-    this.color = color;
+  switchColor(color: Color) {
+    this.selectedColor = color;
     this.colorChange.emit(color);
   }
 

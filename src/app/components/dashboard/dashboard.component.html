@@ -1,6 +1,10 @@
-<app-menubar></app-menubar>
+<app-menubar
+  [color]="color$ | async"
+  [colors]="colors$ | async"
+  (colorChange)="updateColor($event)"
+></app-menubar>
 <div>
-  <div class="header pb-8 pt-5" [ngClass]="(color$ | async).name">
+  <div class="header pb-8 pt-5" [ngClass]="(color$ | async)?.name">
     <div class="container-fluid">
       <div class="header-body">
         <div class="row">
@@ -19,7 +23,7 @@
       <div class="col-xl-3 col-lg-6" *ngFor="let column of columns$ | async">
         <app-column
           [column]="column"
-          [cards]="groupCards(column.id) | async"
+          [cards]="cards[column.order]"
           (update)="updateColumn($event)"
           (cardEvent)="handleCardEvent($event)"
         ></app-column>

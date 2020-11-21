@@ -1,36 +1,25 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { Observable } from "rxjs";
-import { map as rxMap } from "rxjs/operators";
 import { RouteService } from "../../services/route.service";
 import { Color, Route } from "../../models/index";
-import { ColorService } from "../../services/color.service";
 
 @Component({
   selector: "app-menubar",
   templateUrl: "./menubar.component.html",
 })
 export class MenubarComponent implements OnInit {
-  public routes$: Observable<Route[]>;
-  public colorOptions$: Observable<Color[]>;
-  public selectedColor: Color;
+  @Input() color: Color;
+  @Input() colors: Color[];
+  @Output() colorChange: EventEmitter<Color> = new EventEmitter<Color>();
+  routes$: Observable<Route[]>;
 
-  constructor(
-    private routeService: RouteService,
-    private colorService: ColorService
-  ) {}
+  constructor(private routeService: RouteService) {}
 
   ngOnInit() {
     this.routes$ = this.routeService.getRoutes();
-    this.colorOptions$ = this.colorService.getColors().pipe(
-      rxMap((colors: Color[]) => {
-        this.selectedColor = colors[0];
-        return colors;
-      })
-    );
   }
 
-  // TODO: handler
-  colorChangeHandler(option) {
-    // this.colorService.switchColor(option);
+  onColorChange(color: Color) {
+    this.colorChange.emit(color);
   }
 }
