@@ -12,7 +12,10 @@
             class="col-xl-3 col-lg-6"
             *ngFor="let column of columns$ | async"
           >
-            <app-column-header [column]="column"></app-column-header>
+            <app-column-header
+              [column]="column"
+              [count]="cards[column.order]?.length"
+            ></app-column-header>
           </div>
         </div>
       </div>
