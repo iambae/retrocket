@@ -1,0 +1,37 @@
+<nav
+  class="navbar navbar-horizontal navbar-expand-md navbar-light bg-white"
+  id="sidenav-main"
+>
+  <div class="container-fluid bg-gradient-neutral">
+    <a
+      class="navbar-brand"
+      routerLinkActive="active"
+      [routerLink]="['/boards']"
+    >
+      <img src="./assets/img/brand/retrocket.png" class="logo" />
+    </a>
+    <div class="navbar-collapse">
+      <ul class="navbar-nav">
+        <li
+          *ngFor="let route of routes$ | async"
+          class="{{ route.class }} nav-item"
+        >
+          <a
+            routerLinkActive="active"
+            [routerLink]="[route.path]"
+            class="nav-link"
+          >
+            <i class="{{ route.icon }}"></i>
+            {{ route.title }}
+          </a>
+        </li>
+      </ul>
+      <app-menu
+        [colors]="colors"
+        [color]="color"
+        (colorChange)="onColorChange($event)"
+      >
+      </app-menu>
+    </div>
+  </div>
+</nav>

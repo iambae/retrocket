@@ -1,0 +1,62 @@
+[
+  {
+    "value": "#5603ad",
+    "name": "bg-gradient-indigo",
+    "label": "Indigo",
+    "text": "white"
+  },
+  {
+    "value": "#8965e0",
+    "name": "bg-gradient-purple",
+    "label": "Purple",
+    "text": "white"
+  },
+  {
+    "value": "#5e72e4",
+    "name": "bg-gradient-blue",
+    "label": "Blue",
+    "text": "white"
+  },
+  {
+    "value": "#f3a4b5",
+    "name": "bg-gradient-pink",
+    "label": "Pink",
+    "text": "black"
+  },
+  {
+    "value": "#f5365c",
+    "name": "bg-gradient-red",
+    "label": "Red",
+    "text": "white"
+  },
+  {
+    "value": "#fb6340",
+    "name": "bg-gradient-orange",
+    "label": "Orange",
+    "text": "white"
+  },
+  {
+    "value": "#ffd600",
+    "name": "bg-gradient-yellow",
+    "label": "Yellow",
+    "text": "black"
+  },
+  {
+    "value": "#2dce89",
+    "name": "bg-gradient-green",
+    "label": "Green",
+    "text": "white"
+  },
+  {
+    "value": "#2bffc6",
+    "name": "bg-gradient-cyan",
+    "label": "Cyan",
+    "text": "black"
+  },
+  {
+    "value": "#11cdef",
+    "name": "bg-gradient-teal",
+    "label": "Teal",
+    "text": "white"
+  }
+]

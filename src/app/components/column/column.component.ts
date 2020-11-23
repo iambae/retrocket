@@ -1,41 +1,45 @@
-import { CardService } from "./../../services/card.service";
-import { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
-import { v4 as uuidv4 } from "uuid";
-import { Component, Input, OnInit, ElementRef, ViewChild } from "@angular/core";
-import { ColumnService } from "./../../services/column.service";
-import { Card, Column } from "../../models/index";
+import {
+  Component,
+  Input,
+  EventEmitter,
+  ElementRef,
+  ViewChild,
+  Output,
+} from "@angular/core";
+import { Column, Card } from "../../models/index";
 
+/**
+ * ColumnComponent:
+ * - should not reference Card type
+ * - is a static, "dumb" component
+ * - can only have its title updated
+ * - passes data from CardComponent to DashboardComponent
+ */
 @Component({
   selector: "app-column",
   templateUrl: "./column.component.html",
-  styleUrls: ["./column.component.css"],
 })
-export class ColumnComponent implements OnInit {
+export class ColumnComponent {
   @Input() column: Column;
-  @ViewChild("newCardInput") newCardInput: ElementRef;
+  @Input() cards: Card[];
+  @Output() update = new EventEmitter<Column>();
+  @Output() cardEvent = new EventEmitter<any>();
+  @ViewChild("cardInputRef") cardInputRef: ElementRef;
 
-  cards$: Observable<Card[]>;
-  columnLength: number;
-  isEditingTitle = false;
-  columnTitle: string;
+  isEditingCol = false;
+  colTitle: string;
   isAddingCard = false;
-  newCardText: string;
+  cardText: string;
 
-  constructor(
-    private el: ElementRef,
-    private columnService: ColumnService,
-    private cardService: CardService
-  ) {}
+  constructor(private el: ElementRef) {}
 
-  ngOnInit() {
-    this.cards$ = this.cardService.getCards(this.column.id);
-    this.cards$.subscribe((cards) => (this.columnLength = cards.length));
+  canAddCard() {
+    return this.cardText && this.cardText.trim() !== "";
   }
 
   editColumn() {
-    this.columnTitle = this.column.title;
-    this.isEditingTitle = true;
+    this.colTitle = this.column.title;
+    this.isEditingCol = true;
     const input = this.el.nativeElement
       .getElementsByClassName("column-header")[0]
       .getElementsByTagName("input")[0];
@@ -46,32 +50,32 @@ export class ColumnComponent implements OnInit {
   }
 
   updateColumnOnEnter(event: KeyboardEvent) {
-    if (event.keyCode === 13) {
+    if (event.key === "Enter") {
       this.updateColumn();
-    } else if (event.keyCode === 27) {
-      this.clearColumnEdit();
+    } else if (event.key === "Escape") {
+      this.cancelColumnUpdate();
     }
   }
 
   updateColumnOnBlur() {
-    if (this.isEditingTitle) {
+    if (this.isEditingCol) {
       this.updateColumn();
-      this.clearCardAdd();
+      this.resetCardInput();
     }
   }
 
   updateColumn() {
     if (this.column.title && this.column.title.trim() !== "") {
-      this.columnService.updateColumn(this.column);
-      this.isEditingTitle = false;
+      this.update.emit(this.column);
+      this.isEditingCol = false;
     } else {
-      this.clearColumnEdit();
+      this.cancelColumnUpdate();
     }
   }
 
-  clearColumnEdit() {
-    this.column.title = this.columnTitle;
-    this.isEditingTitle = false;
+  cancelColumnUpdate() {
+    this.column.title = this.colTitle;
+    this.isEditingCol = false;
   }
 
   enableAddCard() {
@@ -85,53 +89,50 @@ export class ColumnComponent implements OnInit {
     }, 0);
   }
 
-  addCardOnEnter(event: KeyboardEvent) {
-    const newCardInput = this.newCardInput.nativeElement;
-    newCardInput.style.overflow = "hidden";
-    newCardInput.style.height = "0px";
-    newCardInput.style.height = newCardInput.scrollHeight + "px";
+  onKeyUp(event: KeyboardEvent) {
+    const cardInput = this.cardInputRef.nativeElement;
+    cardInput.style.overflow = "hidden";
+    cardInput.style.height = "0px";
+    cardInput.style.height = cardInput.scrollHeight + "px";
 
-    if (event.keyCode === 13) {
-      if (this.newCardText && this.newCardText.trim() !== "") {
-        this.addCard();
-        this.newCardText = "";
-      } else {
-        this.clearCardAdd();
-      }
-    } else if (event.keyCode === 27) {
-      this.clearCardAdd();
+    if (event.key === "Enter") {
+      this.addCard();
+    } else if (event.key === "Escape") {
+      this.resetCardInput();
     }
   }
 
-  addCardOnBlur() {
-    if (this.isAddingCard) {
-      if (this.newCardText && this.newCardText.trim() !== "") {
-        this.addCard();
-      }
-    }
-    this.clearCardAdd();
+  onBlur() {
+    this.addCard();
   }
 
   addCard() {
-    this.cards$.pipe(tap((cards) => (this.columnLength = cards.length)));
-    const newCard: Card = {
-      id: uuidv4(),
-      text: this.newCardText,
-      order: this.columnLength,
-    };
-    this.cardService.addCard(newCard, this.column.id);
+    if (this.canAddCard()) {
+      this.cardText = this.cardText.trim();
+      this.onCardAddEvent();
+    }
+    this.resetCardInput();
   }
 
-  clearCardAdd() {
+  // Emit card update and delete events
+  onCardEvent(data) {
+    this.cardEvent.emit(data);
+  }
+
+  // Emit card add event
+  onCardAddEvent() {
+    this.cardEvent.emit({
+      type: "add",
+      data: {
+        text: this.cardText,
+        order: this.cards.length,
+        colId: this.column.id,
+      },
+    });
+  }
+
+  resetCardInput() {
     this.isAddingCard = false;
-    this.newCardText = "";
-  }
-
-  updateCard(card: Card) {
-    this.cardService.updateCard(card, this.column.id);
-  }
-
-  deleteCard(card: Card) {
-    this.cardService.deleteCard(card, this.column.id);
+    this.cardText = "";
   }
 }

@@ -2,23 +2,23 @@
   class="card"
   [attr.card-id]="card.id"
   [attr.card-order]="card.order"
-  (click)="editCard()"
+  (click)="onEdit()"
 >
   <textarea
-    #cardContentEdit
+    #container
     [style.display]="isEditing ? '' : 'none'"
-    (keydown)="blurOnEnter($event)"
-    (blur)="updateCard()"
+    (keydown)="onEnter($event)"
+    (blur)="onBlur()"
     [(ngModel)]="card.text"
   ></textarea>
   <span
-    id="cardContent"
-    #cardContent
+    id="content"
+    #content
     [style.display]="isEditing ? 'none' : ''"
-    (click)="captureCardSize()"
+    (click)="saveSize()"
     ><span
       >{{ card.text }}
-      <i class="delete fas fa-times-circle" (click)="onCardDelete()"></i>
+      <i class="delete fas fa-times-circle" (click)="delete()"></i>
     </span>
   </span>
 </li>

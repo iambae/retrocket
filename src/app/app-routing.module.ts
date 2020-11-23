@@ -1,41 +1,25 @@
+import { RegisterComponent } from "./components/register/register.component";
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { BrowserModule } from "@angular/platform-browser";
 import { Routes, RouterModule } from "@angular/router";
-import { DashboardLayoutComponent } from "./layouts/dashboard-layout/dashboard-layout.component";
-import { LoginLayoutComponent } from "./layouts/login-layout/login-layout.component";
+import { LoginComponent } from "./components/login/login.component";
+import { DashboardComponent } from "./components/dashboard/dashboard.component";
+import { DashboardListComponent } from "./components/dashboard/dashboard-list.component";
 
 const routes: Routes = [
+  { path: "boards", component: DashboardListComponent },
+  { path: "boards/:id", component: DashboardComponent },
+  { path: "login", component: LoginComponent },
+  { path: "register", component: RegisterComponent },
   {
     path: "",
-    redirectTo: "dashboard",
+    redirectTo: "boards",
     pathMatch: "full",
   },
   {
-    path: "",
-    component: DashboardLayoutComponent,
-    children: [
-      {
-        path: "",
-        loadChildren:
-          "./layouts/dashboard-layout/dashboard-layout.module#DashboardLayoutModule",
-      },
-    ],
-  },
-  {
-    path: "",
-    component: LoginLayoutComponent,
-    children: [
-      {
-        path: "",
-        loadChildren:
-          "./layouts/login-layout/login-layout.module#LoginLayoutModule",
-      },
-    ],
-  },
-  {
     path: "**",
-    redirectTo: "dashboard",
+    redirectTo: "boards",
   },
 ];
 
@@ -44,7 +28,7 @@ const routes: Routes = [
     CommonModule,
     BrowserModule,
     RouterModule.forRoot(routes, {
-      useHash: true,
+      onSameUrlNavigation: "reload",
     }),
   ],
   exports: [RouterModule],

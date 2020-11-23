@@ -1,0 +1,21 @@
+<div ngbDropdown>
+  <button
+    class="btn btn-outline-neutral"
+    id="selectColor"
+    [ngStyle]="getColor(selectedColor?.value, selectedColor?.text)"
+    ngbDropdownToggle
+  >
+    Select Color
+  </button>
+  <div ngbDropdownMenu aria-labelledby="selectColor">
+    <button
+      ngbDropdownItem
+      *ngFor="let color of colors"
+      [ngStyle]="getColor(color.value, color.text)"
+      [value]="color.name"
+      (click)="switchColor(color)"
+    >
+      {{ color.label }}
+    </button>
+  </div>
+</div>

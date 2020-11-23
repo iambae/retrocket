@@ -1,27 +1,26 @@
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
-import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
 import { environment } from "../environments/environment";
-import { AngularFireModule } from "angularfire2";
-import { AngularFirestoreModule } from "angularfire2/firestore";
-import { AngularFireAuthModule } from "angularfire2/auth";
+import { AngularFireModule } from "@angular/fire";
+import { AngularFirestoreModule } from "@angular/fire/firestore";
+import { AngularFireAuthModule } from "@angular/fire/auth";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppComponent } from "./app.component";
-import { DashboardLayoutComponent } from "./layouts/dashboard-layout/dashboard-layout.component";
-import { LoginLayoutComponent } from "./layouts/login-layout/login-layout.component";
-
-import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
-import { CardService } from "./services/card.service";
-import { ColumnService } from "./services/column.service";
 import { AppRoutingModule } from "./app-routing.module";
 import { ComponentsModule } from "./components/components.module";
+
+import { BoardService } from "./services/board.service";
+import { CardService } from "./services/card.service";
+import { ColumnService } from "./services/column.service";
+import { RouteService } from "./services/route.service";
+import { ColorService } from "./services/color.service";
 
 @NgModule({
   imports: [
     BrowserAnimationsModule,
-    FormsModule,
     HttpClientModule,
     ComponentsModule,
     NgbModule,
@@ -31,8 +30,14 @@ import { ComponentsModule } from "./components/components.module";
     AngularFirestoreModule,
     AngularFireAuthModule,
   ],
-  declarations: [AppComponent, DashboardLayoutComponent, LoginLayoutComponent],
-  providers: [CardService, ColumnService],
+  declarations: [AppComponent],
+  providers: [
+    BoardService,
+    CardService,
+    ColumnService,
+    RouteService,
+    ColorService,
+  ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

@@ -1,17 +1,17 @@
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Component } from "@angular/core";
-import { AuthService } from "../../services/auth.service";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.component.html",
+  selector: "app-register",
+  templateUrl: "./register.component.html",
 })
-export class LoginComponent {
-  loginForm: FormGroup;
+export class RegisterComponent {
+  registerForm: FormGroup;
   submitted: boolean = false;
 
   constructor(public authService: AuthService) {
-    this.loginForm = new FormGroup({
+    this.registerForm = new FormGroup({
       email: new FormControl("", [
         Validators.required,
         Validators.email,
@@ -22,18 +22,18 @@ export class LoginComponent {
   }
 
   get email() {
-    return this.loginForm.get("email");
+    return this.registerForm.get("email");
   }
 
   get password() {
-    return this.loginForm.get("password");
+    return this.registerForm.get("password");
   }
 
   onFormSubmit() {
-    if (this.loginForm.invalid) return;
+    if (this.registerForm.invalid) return;
     this.submitted = true;
-    const { email, password } = this.loginForm.value;
-    this.authService.login(email, password);
-    this.loginForm.reset();
+    const { email, password } = this.registerForm.value;
+    this.authService.signup(email, password);
+    this.registerForm.reset();
   }
 }
