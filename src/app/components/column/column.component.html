@@ -7,7 +7,8 @@
     >
       <div class="column-header" [style.textAlign]="'center'">
         <h4
-          class="card-title text-uppercase text-muted mb-0"
+          class="card-title text-uppercase mb-0"
+          [ngStyle]="{ color: '#6d7994' }"
           [innerHtml]="column.title"
           [style.display]="isEditingCol ? 'none' : ''"
           (click)="editColumn()"
@@ -37,8 +38,8 @@
             'max-height': '200px'
           }"
           [attr.autofocus]="isAddingCard"
-          (keyup)="addCardOnEnter($event)"
-          (blur)="addCardOnBlur()"
+          (keyup)="onKeyUp($event)"
+          (blur)="onBlur()"
           [(ngModel)]="cardText"
         ></textarea>
       </div>

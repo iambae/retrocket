@@ -28,11 +28,14 @@ export class ColumnComponent {
 
   isEditingCol = false;
   colTitle: string;
-  colLength: number;
   isAddingCard = false;
   cardText: string;
 
   constructor(private el: ElementRef) {}
+
+  canAddCard() {
+    return this.cardText && this.cardText.trim() !== "";
+  }
 
   editColumn() {
     this.colTitle = this.column.title;
@@ -57,7 +60,7 @@ export class ColumnComponent {
   updateColumnOnBlur() {
     if (this.isEditingCol) {
       this.updateColumn();
-      this.cancelCardAdd();
+      this.resetCardInput();
     }
   }
 
@@ -86,47 +89,49 @@ export class ColumnComponent {
     }, 0);
   }
 
-  addCardOnEnter(event: KeyboardEvent) {
+  onKeyUp(event: KeyboardEvent) {
     const cardInput = this.cardInputRef.nativeElement;
     cardInput.style.overflow = "hidden";
     cardInput.style.height = "0px";
     cardInput.style.height = cardInput.scrollHeight + "px";
 
     if (event.key === "Enter") {
-      if (this.cardText && this.cardText.trim() !== "") {
-        this.addCard();
-        this.cardText = "";
-      } else {
-        this.cancelCardAdd();
-      }
+      this.addCard();
     } else if (event.key === "Escape") {
-      this.cancelCardAdd();
+      this.resetCardInput();
     }
   }
 
-  addCardOnBlur() {
-    if (this.isAddingCard) {
-      if (this.cardText && this.cardText.trim() !== "") {
-        this.addCard();
-      }
-    }
-    this.cancelCardAdd();
+  onBlur() {
+    this.addCard();
   }
 
   addCard() {
-    const card = {
-      text: this.cardText,
-      order: this.colLength,
-      colId: this.column.id,
-    };
-    this.cardEvent.emit({ type: "add", data: card });
+    if (this.canAddCard()) {
+      this.cardText = this.cardText.trim();
+      this.onCardAddEvent();
+    }
+    this.resetCardInput();
   }
 
+  // Emit card update and delete events
   onCardEvent(data) {
     this.cardEvent.emit(data);
   }
 
-  cancelCardAdd() {
+  // Emit card add event
+  onCardAddEvent() {
+    this.cardEvent.emit({
+      type: "add",
+      data: {
+        text: this.cardText,
+        order: this.cards.length,
+        colId: this.column.id,
+      },
+    });
+  }
+
+  resetCardInput() {
     this.isAddingCard = false;
     this.cardText = "";
   }

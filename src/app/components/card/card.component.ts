@@ -23,7 +23,7 @@ interface CardEvent {
         display: none;
         color: darkgrey;
       }
-      #contentRef:hover i.delete {
+      #content:hover i.delete {
         display: block;
         position: absolute;
         bottom: 0;
@@ -36,26 +36,26 @@ export class CardComponent {
   // Data flow: CardComponent -> ColumnComponent -> DashboardComponent
   @Output() cardEvent = new EventEmitter<CardEvent>();
   @Input() card: Card;
-  @ViewChild("contentRef") contentRef: ElementRef;
-  @ViewChild("contentRefEdit") contentRefEdit: ElementRef;
+  @ViewChild("content") content: ElementRef;
+  @ViewChild("container") container: ElementRef;
 
   text: string;
   isEditing = false;
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
+  canUpdate() {
+    return this.text && this.text.trim() !== "" && this.text !== this.card.text;
+  }
+
   saveSize() {
-    if (this.contentRef && this.contentRefEdit) {
-      var height = `${this.contentRef.nativeElement.offsetHeight}px`;
-      this.renderer.setStyle(
-        this.contentRefEdit.nativeElement,
-        "height",
-        height
-      );
+    if (this.content && this.container) {
+      var height = `${this.content.nativeElement.offsetHeight}px`;
+      this.renderer.setStyle(this.container.nativeElement, "height", height);
     }
   }
 
-  edit() {
+  onEdit() {
     this.isEditing = true;
     this.text = this.card.text;
 
@@ -66,43 +66,31 @@ export class CardComponent {
     }, 0);
   }
 
-  blurOnEnter(event) {
+  onEnter(event) {
     if (event.key === "Enter") {
       event.target.blur();
-    } else if (event.key === "Escape") {
-      this.card.text = this.text;
-      this.isEditing = false;
-    }
-  }
-
-  cancelUpdate() {
-    this.card.text = this.text;
-    this.isEditing = false;
-  }
-
-  // TODO: Merge with blurOnEnter()?
-  updateOnEnter(event: KeyboardEvent) {
-    if (event.key === "Enter") {
-      this.update();
     } else if (event.key === "Escape") {
       this.cancelUpdate();
     }
   }
 
-  update() {
-    if (this.card.text && this.card.text.trim() !== "") {
-      this.cardEvent.emit({ type: "update", data: this.card });
+  onBlur() {
+    if (this.card.text.length === 0) this.delete();
+    else if (this.canUpdate()) {
+      this.update();
       this.isEditing = false;
     } else {
       this.cancelUpdate();
     }
   }
 
-  updateOnBlur() {
-    if (this.isEditing) {
-      this.update();
-      this.cancelUpdate();
-    }
+  update() {
+    this.cardEvent.emit({ type: "update", data: this.card });
+  }
+
+  cancelUpdate() {
+    this.card.text = this.text;
+    this.isEditing = false;
   }
 
   delete() {

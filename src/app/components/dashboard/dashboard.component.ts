@@ -1,6 +1,6 @@
 import { ColorService } from "./../../services/color.service";
 import { BoardService } from "src/app/services/board.service";
-import { Observable } from "rxjs";
+import { Observable, Subscription } from "rxjs";
 import { map as rxMap, switchMap, withLatestFrom } from "rxjs/operators";
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Card, Column, Board, Color } from "src/app/models/index";
@@ -14,6 +14,7 @@ import { CardService } from "src/app/services/card.service";
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   cards: any = {};
+  cardSubsription: Subscription;
   color$: Observable<Color>;
   colors$: Observable<Color[]>;
   boardId: string;
@@ -41,15 +42,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
     );
 
     this.columns$ = this.columnService.getColumns();
-    this.cardService
+    this.cardSubsription = this.cardService
       .getCards(this.boardId)
       .pipe(
         withLatestFrom(this.columns$),
         rxMap(([cards, columns]) => {
           for (const column of columns)
-            this.cards[column.order] = cards.filter(
-              (card: Card) => card.colId === column.id
-            );
+            this.cards[column.order] = cards
+              .filter((card: Card) => card.colId === column.id)
+              .sort((a, b) => a.order - b.order);
         })
       )
       .subscribe();
@@ -67,12 +68,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     switch (event.type) {
       case "add":
         this.cardService.addCard(event.data, this.boardId);
+        break;
       case "update":
         this.cardService.updateCard(event.data, this.boardId);
+        break;
       case "delete":
         this.cardService.deleteCard(event.data, this.boardId);
     }
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.cardSubsription.unsubscribe();
+  }
 }

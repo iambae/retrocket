@@ -2,17 +2,18 @@
   class="card"
   [attr.card-id]="card.id"
   [attr.card-order]="card.order"
-  (click)="edit()"
+  (click)="onEdit()"
 >
   <textarea
-    #contentRefEdit
+    #container
     [style.display]="isEditing ? '' : 'none'"
-    (keydown)="blurOnEnter($event)"
-    (blur)="update()"
+    (keydown)="onEnter($event)"
+    (blur)="onBlur()"
     [(ngModel)]="card.text"
   ></textarea>
   <span
-    #contentRef
+    id="content"
+    #content
     [style.display]="isEditing ? 'none' : ''"
     (click)="saveSize()"
     ><span
