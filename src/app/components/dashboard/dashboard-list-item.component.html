@@ -1,0 +1,53 @@
+<th>
+  <div (click)="openBoard(board.id)" class="media align-items-center">
+    <a
+      class="avatar rounded-circle mr-3"
+      [ngStyle]="{ 'background-color': board.color }"
+    >
+      <img class="filter" src="../../../assets/img/brand/favicon.png" />
+    </a>
+    <div>
+      <span class="mb-0">{{ board.name }}</span>
+    </div>
+  </div>
+</th>
+<td>{{ getDate(board.created) }}</td>
+<td>{{ getDate(board.modified) }}</td>
+<td>
+  <div (click)="onEditMemo(board.memo)">
+    <i
+      *ngIf="board.memo.length === 0"
+      [style.margin-right]="'10px'"
+      class="fas fa-plus-circle"
+    ></i>
+    <textarea
+      class="rt-text"
+      #container
+      [style.display]="isEditingMemo ? '' : 'none'"
+      (keydown)="onKeyDown($event)"
+      (keyup)="onKeyUp($event)"
+      (blur)="onBlur()"
+      [(ngModel)]="board.memo"
+    ></textarea>
+    <span
+      id="content"
+      class="rt-span"
+      #content
+      *ngIf="board.memo.length > 0"
+      [style.display]="isEditingMemo ? 'none' : ''"
+      (click)="saveSize()"
+      ><span>{{ board.memo }} </span>
+    </span>
+  </div>
+</td>
+<td class="text-right actions-menu">
+  <div ngbDropdown placement="bottom-right">
+    <a class="btn btn-sm btn-icon-only text-light" ngbDropdownToggle>
+      <i class="fas fa-ellipsis-v"></i>
+    </a>
+    <div ngbDropdownMenu class="dropdown-menu-right dropdown-menu-arrow" ml-0>
+      <a ngbDropdownItem>Share</a>
+      <a ngbDropdownItem (click)="onClickDelete()">Delete</a>
+    </div>
+  </div>
+</td>

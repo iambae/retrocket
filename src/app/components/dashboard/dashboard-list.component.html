@@ -1,22 +1,46 @@
-<div class="header pb-8 pt-5">
+<div class="header bg-gradient-danger pb-8 pt-5 pt-md-8">
   <div class="container-fluid">
-    <div class="header-body">
-      <div class="row">
-        <div class="col-xl-3 col-lg-6" *ngFor="let board of boards$ | async">
-          <div
-            (click)="openBoard(board.id)"
-            class="card card-stats mb-4 mb-xl-0"
-          >
-            <div class="card-body">
-              <div class="row">
-                <div class="col">
-                  <h3 class="card-title text-uppercase text-muted mb-0">
-                    {{ board.name }}
-                  </h3>
-                </div>
-              </div>
+    <div class="header-body"></div>
+  </div>
+</div>
+<div *ngIf="boards" class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header border-0">
+          <div class="row">
+            <div class="col">
+              <h2 class="mb-0">Past Retrospective Sessions</h2>
+            </div>
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-lg btn-outline-default float-right"
+                (click)="openDialog()"
+              >
+                <i [style.margin-right]="'10px'" class="fas fa-plus-circle"></i
+                >New Session
+              </button>
             </div>
           </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Session</th>
+                <th scope="col">Created</th>
+                <th scope="col">Modified</th>
+                <th style="width: 30%" scope="col">Memo</th>
+                <th style="width: 10%" scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let board of boards"
+                ><tr app-dashboard-list-item [board]="board"></tr>
+              </ng-container>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

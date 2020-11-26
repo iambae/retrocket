@@ -30,18 +30,12 @@ export class ColorService {
       );
   }
 
-  /** GET data for color with colorId from the server */
-  getColor(colorId: string): Observable<Color> {
-    return this.firestoreService
-      .collection("colors")
-      .doc<Color>(colorId)
-      .snapshotChanges()
-      .pipe(
-        rxMap((changes) => {
-          const data = changes.payload.data() as Color;
-          const id = changes.payload.id;
-          return { id, ...data };
-        })
-      );
+  /** GET data for color with colorValue from the server */
+  getColor(colorValue: string): Observable<Color> {
+    return this.getColors().pipe(
+      rxMap((colors) => {
+        return colors.find((color) => color.value === colorValue);
+      })
+    );
   }
 }
