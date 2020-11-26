@@ -6,16 +6,18 @@ import {
   AngularFirestoreCollection,
 } from "@angular/fire/firestore";
 import { Board } from "../models/index";
+import { firestore } from "firebase";
 
 @Injectable()
 export class BoardService {
-  public board: Board;
-  public boards: Board[];
   boards$: Observable<Board[]>;
   boardCollection: AngularFirestoreCollection<Board>;
 
   constructor(private firestoreService: AngularFirestore) {
-    this.boardCollection = this.firestoreService.collection("boards");
+    this.boardCollection = this.firestoreService.collection(
+      "boards",
+      (collectionRef) => collectionRef.orderBy("created")
+    );
     this.boards$ = this.boardCollection.snapshotChanges().pipe(
       rxMap((changes) =>
         changes.map((change) => {
@@ -27,24 +29,27 @@ export class BoardService {
     );
   }
 
-  createBoard() {}
+  addBoard(board) {
+    this.boardCollection
+      .doc(board.id)
+      .set(board)
+      .then(() => console.log(`New board <${board.name}> created!`))
+      .catch((error) => console.error("Error creating new board: ", error));
+  }
 
   getBoard(boardId: string): Observable<Board> {
     return this.boards$.pipe(
       filter((boards) => !!boards),
       rxMap((boards) => {
-        this.board = boards.find((board) => board.id === boardId);
-        return this.board;
+        return boards.find((board) => board.id === boardId);
       })
     );
   }
 
-  /** GET: get all boards associated with user with userId */
   getBoards(userId: string): Observable<Board[]> {
     return this.boards$.pipe(
       rxMap((boards) => {
-        this.boards = boards.filter((board) => board.userId === userId);
-        return this.boards;
+        return boards.filter((board) => board.userId === userId);
       })
     );
   }
@@ -52,8 +57,19 @@ export class BoardService {
   updateBoard(boardId: string, data: any) {
     this.firestoreService
       .doc(`boards/${boardId}`)
-      .update(data)
+      .update({
+        modified: firestore.FieldValue.serverTimestamp(),
+        ...data,
+      })
       .then(() => console.log(`Board ${boardId} updated!`))
-      .catch((error) => console.error("Error updating card: ", error));
+      .catch((error) => console.error("Error updating board: ", error));
+  }
+
+  deleteBoard(boardId: string) {
+    this.boardCollection
+      .doc(boardId)
+      .delete()
+      .then(() => console.log("Document successfully deleted!"))
+      .catch((error) => console.error("Error removing document: ", error));
   }
 }

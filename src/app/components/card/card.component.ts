@@ -17,20 +17,6 @@ interface CardEvent {
 @Component({
   selector: "app-card",
   templateUrl: "./card.component.html",
-  styles: [
-    `
-      i.delete {
-        display: none;
-        color: darkgrey;
-      }
-      #content:hover i.delete {
-        display: block;
-        position: absolute;
-        bottom: 0;
-        right: 0;
-      }
-    `,
-  ],
 })
 export class CardComponent {
   // Data flow: CardComponent -> ColumnComponent -> DashboardComponent
@@ -50,7 +36,7 @@ export class CardComponent {
 
   saveSize() {
     if (this.content && this.container) {
-      var height = `${this.content.nativeElement.offsetHeight}px`;
+      const height = `${this.content.nativeElement.offsetHeight}px`;
       this.renderer.setStyle(this.container.nativeElement, "height", height);
     }
   }

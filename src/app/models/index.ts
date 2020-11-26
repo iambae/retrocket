@@ -2,10 +2,10 @@ export interface Board {
   id: string;
   name?: string;
   userId: string;
-  colorId: string;
-  // admin: string;
-  // createdAt: Date;
-  // updatedAt: Date;
+  memo?: string;
+  color?: string;
+  created: any;
+  modified: any;
 }
 
 export interface Column {
@@ -22,8 +22,6 @@ export interface Card {
   boardId: string;
   text: string;
   order: number;
-  // author: string;
-  // votes: number;
 }
 
 export interface Color {

@@ -6,14 +6,15 @@
 >
   <textarea
     #container
+    class="rt-text"
     [style.display]="isEditing ? '' : 'none'"
     (keydown)="onEnter($event)"
     (blur)="onBlur()"
     [(ngModel)]="card.text"
   ></textarea>
   <span
-    id="content"
     #content
+    class="rt-span"
     [style.display]="isEditing ? 'none' : ''"
     (click)="saveSize()"
     ><span

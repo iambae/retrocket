@@ -1,9 +1,14 @@
 [
-    {
-      "path": "/dashboard",
-      "title": "Dashboard",
-      "icon": "fas fa-columns text-primary",
-      "class": ""
-    },
-    { "path": "/login", "title": "Login", "icon": "fas fa-key text-info", "class": "" }
+  {
+    "path": "/boards",
+    "title": "Dashboard",
+    "icon": "fas fa-columns text-primary",
+    "class": ""
+  },
+  {
+    "path": "/login",
+    "title": "Login",
+    "icon": "fas fa-key text-info",
+    "class": ""
+  }
 ]

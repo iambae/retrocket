@@ -1,4 +1,4 @@
-import { ColorService } from "./../../services/color.service";
+import { ColorService } from "src/app/services/color.service";
 import { BoardService } from "src/app/services/board.service";
 import { Observable, Subscription } from "rxjs";
 import { map as rxMap, switchMap, withLatestFrom } from "rxjs/operators";
@@ -34,7 +34,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.colors$ = this.colorService.getColors();
     this.color$ = this.board$.pipe(
-      switchMap((board) => this.colorService.getColor(board.colorId)),
+      switchMap((board) => this.colorService.getColor(board.color)),
       withLatestFrom(this.colors$),
       rxMap(([selectedColor, colors]) =>
         colors.find((color) => selectedColor.id === color.id)
@@ -57,7 +57,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   updateColor(color: Color) {
-    this.boardService.updateBoard(this.boardId, { colorId: color.id });
+    this.boardService.updateBoard(this.boardId, { color: color.value });
   }
 
   updateColumn(data: Column) {
