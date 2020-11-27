@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Board } from "../models/index";
 import { AngularFireAuth } from "@angular/fire/auth";
+import firebase from "firebase/app";
 
 @Injectable()
 export class BoardService {
@@ -53,7 +54,10 @@ export class BoardService {
     this.firestoreService
       .collection("boards")
       .doc(board.id)
-      .set(board)
+      .set({
+        ...board,
+        created: firebase.firestore.Timestamp.fromDate(new Date()),
+      })
       .then(() => console.log(`New board <${board.name}> created!`))
       .catch((error) => console.error("Error creating new board: ", error));
   }
