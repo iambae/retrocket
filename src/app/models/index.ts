@@ -1,11 +1,10 @@
 export interface Board {
   id: string;
   name?: string;
-  userId: string;
+  author: string;
   memo?: string;
   color?: string;
   created: any;
-  modified: any;
 }
 
 export interface Column {

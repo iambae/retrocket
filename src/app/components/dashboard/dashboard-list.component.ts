@@ -9,7 +9,7 @@ import { switchMap } from "rxjs/operators";
 import { Subscription } from "rxjs";
 import { firestore } from "firebase";
 import { v4 as uuidv4 } from "uuid";
-import { AuthService } from "src/app/services/auth.service";
+import { AuthService } from "src/app/auth/auth.service";
 import { BoardService } from "src/app/services/board.service";
 import { Board } from "src/app/models";
 
@@ -69,18 +69,19 @@ export class DashboardListComponent implements OnInit, OnDestroy {
         data: { name: "", memo: "" },
       })
       .afterClosed()
-      .subscribe((result) => this.addBoard(result));
+      .subscribe((result) => {
+        if (result) this.addBoard(result);
+      });
   }
 
   addBoard({ name, memo }) {
     const board: Board = {
       id: uuidv4(),
-      userId: this.userId,
+      author: this.userId,
       name,
       memo,
       color: "#fb6340", // default color: Orange
       created: firestore.FieldValue.serverTimestamp(),
-      modified: firestore.FieldValue.serverTimestamp(),
     };
     this.boardService.addBoard(board);
   }

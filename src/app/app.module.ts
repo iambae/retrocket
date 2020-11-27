@@ -15,7 +15,6 @@ import { ComponentsModule } from "./components/components.module";
 import { BoardService } from "./services/board.service";
 import { CardService } from "./services/card.service";
 import { ColumnService } from "./services/column.service";
-import { RouteService } from "./services/route.service";
 import { ColorService } from "./services/color.service";
 
 @NgModule({
@@ -31,13 +30,7 @@ import { ColorService } from "./services/color.service";
     AngularFireAuthModule,
   ],
   declarations: [AppComponent],
-  providers: [
-    BoardService,
-    CardService,
-    ColumnService,
-    RouteService,
-    ColorService,
-  ],
+  providers: [BoardService, CardService, ColumnService, ColorService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

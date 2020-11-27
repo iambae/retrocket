@@ -12,17 +12,20 @@
     </a>
     <div class="navbar-collapse">
       <ul class="navbar-nav">
-        <li
-          *ngFor="let route of routes$ | async"
-          class="{{ route.class }} nav-item"
-        >
+        <li class="nav-item">
           <a
             routerLinkActive="active"
-            [routerLink]="[route.path]"
+            [routerLink]="['/boards']"
             class="nav-link"
           >
-            <i class="{{ route.icon }}"></i>
-            {{ route.title }}
+            <i class="fas fa-columns text-primary"></i>
+            Dashboard
+          </a>
+        </li>
+        <li *ngIf="authService.isAuthenticated()" class="nav-item">
+          <a (click)="onClickLogout()" class="nav-link">
+            <i class="fas fa-key text-info"></i>
+            Logout
           </a>
         </li>
       </ul>
