@@ -7,7 +7,7 @@ import {
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { switchMap } from "rxjs/operators";
 import { Subscription } from "rxjs";
-import { firestore } from "firebase";
+// import { firestore } from "firebase";
 import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "src/app/auth/auth.service";
 import { BoardService } from "src/app/services/board.service";
@@ -75,13 +75,12 @@ export class DashboardListComponent implements OnInit, OnDestroy {
   }
 
   addBoard({ name, memo }) {
-    const board: Board = {
+    const board = {
       id: uuidv4(),
       author: this.userId,
       name,
       memo,
       color: "#fb6340", // default color: Orange
-      created: firestore.FieldValue.serverTimestamp(),
     };
     this.boardService.addBoard(board);
   }
