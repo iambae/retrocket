@@ -1,25 +1,24 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { Observable } from "rxjs";
-import { RouteService } from "../../services/route.service";
-import { Color, Route } from "../../models/index";
+import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Router } from "@angular/router";
+import { AuthService } from "src/app/auth/auth.service";
+import { Color } from "../../models/index";
 
 @Component({
   selector: "app-menubar",
   templateUrl: "./menubar.component.html",
 })
-export class MenubarComponent implements OnInit {
+export class MenubarComponent {
   @Input() color: Color;
   @Input() colors: Color[];
   @Output() colorChange: EventEmitter<Color> = new EventEmitter<Color>();
-  routes$: Observable<Route[]>;
 
-  constructor(private routeService: RouteService) {}
-
-  ngOnInit() {
-    this.routes$ = this.routeService.getRoutes();
-  }
+  constructor(private router: Router, public authService: AuthService) {}
 
   onColorChange(color: Color) {
     this.colorChange.emit(color);
+  }
+
+  onClickLogout() {
+    this.authService.logout().then(() => this.router.navigate(["/login"]));
   }
 }

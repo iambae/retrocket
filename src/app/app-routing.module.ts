@@ -6,12 +6,27 @@ import { Routes, RouterModule } from "@angular/router";
 import { LoginComponent } from "./components/login/login.component";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { DashboardListComponent } from "./components/dashboard/dashboard-list.component";
+import { AuthGuard } from "./auth/auth.guard";
 
 const routes: Routes = [
-  { path: "boards", component: DashboardListComponent },
-  { path: "boards/:id", component: DashboardComponent },
-  { path: "login", component: LoginComponent },
+  {
+    path: "boards",
+    component: DashboardListComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: "boards/:id",
+    component: DashboardComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: "login",
+    component: LoginComponent,
+    data: { redirectToBoards: true },
+    canActivate: [AuthGuard],
+  },
   { path: "register", component: RegisterComponent },
+
   {
     path: "",
     redirectTo: "boards",
@@ -32,5 +47,6 @@ const routes: Routes = [
     }),
   ],
   exports: [RouterModule],
+  providers: [AuthGuard],
 })
 export class AppRoutingModule {}
