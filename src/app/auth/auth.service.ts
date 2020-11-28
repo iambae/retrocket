@@ -8,14 +8,9 @@ import { Observable } from "rxjs";
 })
 export class AuthService {
   user: Observable<firebase.User>;
-  redirectUrl: string;
 
   constructor(private afAuth: AngularFireAuth, private router: Router) {
-    this.user = afAuth.user;
-  }
-
-  isAuthenticated(): boolean {
-    return this.user !== null;
+    this.user = this.afAuth.authState;
   }
 
   signup(email: string, password: string) {
@@ -35,6 +30,7 @@ export class AuthService {
       .signInWithEmailAndPassword(email, password)
       .then((value) => {
         console.log("Success!", value);
+        localStorage.setItem("user", JSON.stringify(value.user));
         this.router.navigate(["/boards"]);
       })
       .catch((err) => {
@@ -42,7 +38,13 @@ export class AuthService {
       });
   }
 
-  logout(): Promise<void> {
-    return this.afAuth.signOut();
+  async logout(): Promise<boolean> {
+    try {
+      await this.afAuth.signOut();
+      localStorage.removeItem("user");
+      return await this.router.navigate(["/login"]);
+    } catch (err) {
+      return err;
+    }
   }
 }

@@ -7,6 +7,7 @@ import { LoginComponent } from "./components/login/login.component";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { DashboardListComponent } from "./components/dashboard/dashboard-list.component";
 import { AuthGuard } from "./auth/auth.guard";
+import { AccessGuard } from "./auth/access.guard";
 
 const routes: Routes = [
   {
@@ -22,8 +23,7 @@ const routes: Routes = [
   {
     path: "login",
     component: LoginComponent,
-    data: { redirectToBoards: true },
-    canActivate: [AuthGuard],
+    canActivate: [AccessGuard],
   },
   { path: "register", component: RegisterComponent },
 
@@ -47,6 +47,5 @@ const routes: Routes = [
     }),
   ],
   exports: [RouterModule],
-  providers: [AuthGuard],
 })
 export class AppRoutingModule {}
