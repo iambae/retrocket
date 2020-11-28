@@ -22,6 +22,16 @@ export interface DialogData {
   templateUrl: "./dashboard-list.component.html",
   styles: [
     `
+      .header-body {
+        justify-content: center;
+        display: flex;
+      }
+
+      h1 {
+        color: white;
+        font-size: xxx-large;
+      }
+
       .btn {
         border-radius: 20px;
       }
