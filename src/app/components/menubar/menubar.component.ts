@@ -16,6 +16,7 @@ import { Color } from "../../models/index";
       }
 
       .board-name input {
+        color: #525f7f;
         font-style: oblique;
         font-size: 2rem;
         font-family: "aventraregular";
@@ -44,6 +45,10 @@ import { Color } from "../../models/index";
       .board-name div {
         float: left;
       }
+
+      .navbar-horizontal .navbar-nav .nav-link {
+        font-weight: 700;
+      }
     `,
   ],
 })
@@ -62,6 +67,8 @@ export class MenubarComponent {
   editBoardName(name: string) {
     this.boardUpdate.emit({ field: "name", value: name });
   }
+
+  onClickShare() {}
 
   onClickLogout() {
     this.authService
