@@ -1,7 +1,8 @@
 <app-menubar
   [color]="color$ | async"
   [colors]="colors$ | async"
-  (colorChange)="updateColor($event)"
+  [boardName]="(board$ | async)?.name"
+  (boardUpdate)="updateBoard($event)"
 ></app-menubar>
 <div>
   <div class="header pb-8 pt-5" [ngClass]="(color$ | async)?.name">

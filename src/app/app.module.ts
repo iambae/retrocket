@@ -1,11 +1,11 @@
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
-import { RouterModule } from "@angular/router";
 import { environment } from "../environments/environment";
 import { AngularFireModule } from "@angular/fire";
+import { RouterModule } from "@angular/router";
 import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireAuthModule } from "@angular/fire/auth";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppComponent } from "./app.component";
@@ -19,13 +19,13 @@ import { ColorService } from "./services/color.service";
 
 @NgModule({
   imports: [
+    AngularFireModule.initializeApp(environment.firebaseConfig, "retrocket"),
     BrowserAnimationsModule,
     HttpClientModule,
-    ComponentsModule,
     NgbModule,
     RouterModule,
+    ComponentsModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig, "retrocket"),
     AngularFirestoreModule,
     AngularFireAuthModule,
   ],

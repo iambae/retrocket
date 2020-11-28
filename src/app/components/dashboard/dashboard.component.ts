@@ -56,12 +56,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
-  updateColor(color: Color) {
-    this.boardService.updateBoard(this.boardId, { color: color.value });
-  }
-
-  updateColumn(data: Column) {
-    this.columnService.updateColumn(data);
+  updateBoard({ field, value }) {
+    this.boardService.updateBoard(this.boardId, { [field]: value });
   }
 
   handleCardEvent(event: { type: string; data: Card }) {

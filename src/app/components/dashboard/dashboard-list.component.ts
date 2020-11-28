@@ -7,7 +7,6 @@ import {
 import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { switchMap } from "rxjs/operators";
 import { Subscription } from "rxjs";
-// import { firestore } from "firebase";
 import { v4 as uuidv4 } from "uuid";
 import { AuthService } from "src/app/auth/auth.service";
 import { BoardService } from "src/app/services/board.service";
