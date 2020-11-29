@@ -89,6 +89,7 @@ export class DashboardListComponent implements OnInit, OnDestroy {
       author: this.userId,
       name,
       memo,
+      team: [],
       color: "#fb6340", // default color: Orange
     };
     this.boardService.addBoard(board);

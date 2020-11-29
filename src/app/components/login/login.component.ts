@@ -1,14 +1,17 @@
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { Component } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { AuthService } from "../../auth/auth.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-login",
   templateUrl: "./login.component.html",
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   submitted: boolean = false;
+  loggedIn: boolean;
+  userSubscription: Subscription;
 
   constructor(public authService: AuthService) {
     this.loginForm = new FormGroup({
@@ -18,6 +21,13 @@ export class LoginComponent {
         Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$"),
       ]),
       password: new FormControl("", Validators.required),
+    });
+  }
+
+  ngOnInit() {
+    this.userSubscription = this.authService.user.subscribe((user) => {
+      if (user) this.loggedIn = user.isAnonymous ? false : true;
+      else this.loggedIn = false;
     });
   }
 
@@ -34,6 +44,13 @@ export class LoginComponent {
     this.submitted = true;
     const { email, password } = this.loginForm.value;
     this.authService.login(email, password);
-    this.loginForm.reset();
+  }
+
+  onClickLogout() {
+    this.authService.logout();
+  }
+
+  ngOnDestroy() {
+    this.userSubscription.unsubscribe();
   }
 }

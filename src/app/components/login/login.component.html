@@ -6,17 +6,19 @@
           <a
             class="navbar-brand"
             routerLinkActive="active"
-            [routerLink]="['/boards']"
+            [routerLink]="['/login']"
           >
             <img class="logo" src="assets/img/brand/retrocket-white.png" />
           </a>
-          <h1 class="text-white mt-5 mb-3">Welcome back!</h1>
-          <p class="text-muted text-white">
-            Coming together is a <b>beginning</b>,<br />
-            staying together is a <b>progress</b>,<br />
-            and working together is a <b>success</b>.<br />
-            <i>- Henry Ford</i>
-          </p>
+          <div *ngIf="!loggedIn">
+            <h1 class="text-white mt-5 mb-3">Welcome back!</h1>
+            <p class="text-muted text-white">
+              Coming together is a <b>beginning</b>,<br />
+              staying together is a <b>progress</b>,<br />
+              and working together is a <b>success</b>.<br />
+              <i>- Henry Ford</i>
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -25,12 +27,18 @@
 <div class="container mt--8 pb-5">
   <div class="row justify-content-center">
     <div class="col-lg-5 col-md-7">
-      <div class="card bg-secondary shadow border-0">
+      <div class="card bg-secondary shadow">
         <div class="card-body px-lg-5 py-lg-4">
           <div class="text-center my-3">
-            <p>Get back to retro!</p>
+            <p *ngIf="!loggedIn">Get back to retro!</p>
+            <h3 *ngIf="loggedIn">Done for the day?</h3>
           </div>
-          <form #form [formGroup]="loginForm" (ngSubmit)="onFormSubmit(form)">
+          <form
+            *ngIf="!loggedIn"
+            #form
+            [formGroup]="loginForm"
+            (ngSubmit)="onFormSubmit(form)"
+          >
             <div class="form-group mb-3">
               <div class="input-group input-group-alternative">
                 <div class="input-group-prepend">
@@ -86,22 +94,25 @@
               </button>
             </div>
           </form>
-        </div>
-      </div>
-      <div class="row mt-3">
-        <div class="col-6">
-          <a href="javascript:void(0)" class="text-medium">Forgot password?</a>
-        </div>
-        <div class="col-6 text-right">
-          <a
-            routerLink="/register"
-            routerLinkActive="active"
-            class="text-medium"
-            >Create new account</a
-          >
+          <div *ngIf="loggedIn" class="text-center">
+            <button
+              [disabled]="!loggedIn"
+              (click)="onClickLogout()"
+              class="btn btn-primary my-4"
+            >
+              <i class="fas fa-sign-out-alt"></i>
+              Sign out
+            </button>
+            <a routerLink="/boards" class="greet">
+              <button [disabled]="!loggedIn" class="btn btn-primary my-4">
+                <i class="fas fa-laugh"></i>
+                Back to Dashboard
+              </button>
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </div>
+  <router-outlet></router-outlet>
 </div>
-<router-outlet></router-outlet>

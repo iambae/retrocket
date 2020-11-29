@@ -21,7 +21,7 @@ export class AuthService {
         this.router.navigate(["dashboard-list"]);
       })
       .catch((err) => {
-        console.log("Something went wrong:", err);
+        console.log("Something went wrong during signup:", err);
       });
   }
 
@@ -34,17 +34,33 @@ export class AuthService {
         this.router.navigate(["/boards"]);
       })
       .catch((err) => {
-        console.log("Something went wrong:", err);
+        console.log("Something went wrong during email+pw signin:", err);
       });
   }
 
-  async logout(): Promise<boolean> {
-    try {
-      await this.afAuth.signOut();
-      localStorage.removeItem("user");
-      return await this.router.navigate(["/login"]);
-    } catch (err) {
-      return err;
-    }
+  signInAnonymously(username: string, avatarUrl: string, redirectUrl: string) {
+    this.afAuth
+      .signInAnonymously()
+      .then((data) => {
+        // Deep clone data.user object ignoring internal properties
+        const user = {
+          ...JSON.parse(JSON.stringify(data.user)),
+          displayName: username,
+          photoURL: avatarUrl,
+        };
+
+        localStorage.setItem("user", JSON.stringify(user));
+        console.log("Anonymous signin success!", user);
+        this.router.navigate(["/boards", redirectUrl]);
+      })
+      .catch((err) => {
+        console.log("Something went wrong during anonymous signin:", err);
+      });
+  }
+
+  logout() {
+    this.afAuth.signOut();
+    localStorage.removeItem("user");
+    this.router.navigate(["/login"]);
   }
 }
