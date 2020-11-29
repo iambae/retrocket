@@ -71,9 +71,6 @@ export class MenubarComponent {
   onClickShare() {}
 
   onClickLogout() {
-    this.authService
-      .logout()
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    this.authService.logout();
   }
 }

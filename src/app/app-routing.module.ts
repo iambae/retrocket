@@ -1,3 +1,4 @@
+import { JoinComponent } from "./components/join/join.component";
 import { RegisterComponent } from "./components/register/register.component";
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
@@ -7,13 +8,16 @@ import { LoginComponent } from "./components/login/login.component";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { DashboardListComponent } from "./components/dashboard/dashboard-list.component";
 import { AuthGuard } from "./auth/auth.guard";
-import { AccessGuard } from "./auth/access.guard";
+import { AnonGuard } from "./auth/anon.guard";
 
 const routes: Routes = [
   {
-    path: "boards",
-    component: DashboardListComponent,
-    canActivate: [AuthGuard],
+    path: "login",
+    component: LoginComponent,
+  },
+  {
+    path: "join/:id",
+    component: JoinComponent,
   },
   {
     path: "boards/:id",
@@ -21,10 +25,11 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: "login",
-    component: LoginComponent,
-    canActivate: [AccessGuard],
+    path: "boards",
+    component: DashboardListComponent,
+    canActivate: [AnonGuard],
   },
+
   { path: "register", component: RegisterComponent },
 
   {

@@ -14,11 +14,7 @@
 <td>{{ getDate(board.created) }}</td>
 <td>
   <div (click)="onEditMemo(board.memo)">
-    <i
-      *ngIf="board.memo.length === 0"
-      [style.margin-right]="'10px'"
-      class="fas fa-plus-circle"
-    ></i>
+    <i *ngIf="board.memo.length === 0" class="fas fa-plus-circle"></i>
     <textarea
       class="rt-text"
       #container

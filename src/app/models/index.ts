@@ -5,6 +5,7 @@ export interface Board {
   memo?: string;
   color?: string;
   created: any;
+  team: string[];
 }
 
 export interface Column {
