@@ -10,6 +10,6 @@ export class NotFoundComponent {
   constructor(private router: Router) {}
 
   onClickSignup() {
-    this.router.navigate(["/register"]);
+    this.router.navigate(["/start"]);
   }
 }

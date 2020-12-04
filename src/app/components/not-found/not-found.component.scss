@@ -19,6 +19,10 @@ $button-color: #ffcb39;
   color: var(--white);
   height: 100vh;
   width: 100vw;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem;
 }
 
 ul {
@@ -30,14 +34,6 @@ ul {
 a {
   text-decoration: none;
   color: inherit;
-}
-
-.not-found {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  padding: 0 1rem;
-  margin-top: 80px;
 }
 
 .button {

@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from "@angular/core";
-import { AuthService } from "src/app/auth/auth.service";
+import { AuthService } from "src/app/services/auth.service";
 import { Color } from "../../models/index";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-menubar",
@@ -58,7 +59,7 @@ export class MenubarComponent {
   @Input() boardName: string;
   @Output() boardUpdate: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService, private router: Router) {}
 
   toggleColor(color: Color) {
     this.boardUpdate.emit({ field: "color", value: color.value });
@@ -71,6 +72,6 @@ export class MenubarComponent {
   onClickShare() {}
 
   onClickLogout() {
-    this.authService.logout();
+    this.authService.logout().then(() => this.router.navigate(["/start"]));
   }
 }

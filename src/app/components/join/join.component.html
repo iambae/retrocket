@@ -31,21 +31,25 @@
               type="text"
             />
           </div>
+          <p class="status text-warning" *ngIf="usernameTaken">
+            Display name already in use for this session! Please pick a
+            differenet name.
+          </p>
           <img
             class="loading"
-            *ngIf="username.length > 0 && isLoading"
+            *ngIf="username.length > 0 && isLoading && !usernameTaken"
             src="../../../assets/img/brand/retrocket.gif"
             alt="Loading..."
           />
           <img
-            [hidden]="isLoading"
+            [hidden]="isLoading || usernameTaken"
             (load)="isLoading = false"
             src="{{ avatarUrl }}"
           />
           <div class="text-center">
             <button
-              [disabled]="isLoading"
-              (click)="onClickJoin()"
+              [disabled]="!(userReady$ | async) || isLoading"
+              (click)="joinBoard()"
               type="submit"
               class="btn btn-warning my-4"
             >

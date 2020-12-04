@@ -89,7 +89,7 @@ export class DashboardListItemComponent implements AfterViewInit {
   }
 
   openBoard(id: string) {
-    this.router.navigate(["/boards", id]);
+    this.router.navigate(["/board", id]);
   }
 
   getDate(date): string {

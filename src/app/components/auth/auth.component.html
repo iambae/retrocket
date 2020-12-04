@@ -1,0 +1,104 @@
+<div class="header bg-gradient-warning py-5 py-lg-6">
+  <div class="container">
+    <div class="header-body text-center mt--4 mb-7">
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-6">
+          <a class="navbar-brand">
+            <img class="logo" src="assets/img/brand/retrocket-white.png" />
+          </a>
+          <div *ngIf="!loggedIn">
+            <h1 class="text-white mt-5 mb-3">Welcome!</h1>
+            <p class="text-muted text-white quotes">
+              {{ quote.text }} <br />
+              <i>- {{ quote.author }}</i>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container mt--8 pb-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-5 col-md-7">
+      <div class="card bg-secondary shadow" style="padding: 15px">
+        <div *ngIf="loggedIn">
+          <div class="text-center">
+            <div class="text-center my-3">
+              <h3>Done for the day?</h3>
+            </div>
+            <button (click)="onClickLogout()" class="btn btn-warning my-4">
+              <i class="fas fa-sign-out-alt"></i>
+              Sign out
+            </button>
+            <a routerLink="/boards" class="greet">
+              <button class="btn btn-warning my-4">
+                <i class="fas fa-laugh"></i>
+                Back to Dashboard
+              </button>
+            </a>
+          </div>
+        </div>
+        <div *ngIf="!loggedIn" class="card-body">
+          <div class="flex-wrap">
+            <form [formGroup]="form">
+              <input type="radio" name="rg" id="sign-in" checked />
+              <input type="radio" name="rg" id="sign-up" />
+              <input type="radio" name="rg" id="reset" />
+              <label (click)="formId = 0" for="sign-in">Sign in</label>
+              <label (click)="formId = 1" for="sign-up">Sign up</label>
+              <label (click)="formId = 2" for="reset">Reset</label>
+              <input
+                class="sign-up sign-in reset form-control"
+                type="email"
+                placeholder="Email"
+                formControlName="email"
+                name="email"
+              />
+              <div *ngIf="email.errors && email.touched">
+                <div class="text-warning" *ngIf="email.errors.required">
+                  Email required.
+                </div>
+                <div class="text-warning" *ngIf="email.errors.pattern">
+                  Email not valid.
+                </div>
+              </div>
+              <input
+                class="sign-up sign-in form-control"
+                type="password"
+                placeholder="Password"
+                formControlName="password"
+                name="password"
+              />
+              <div *ngIf="password.errors && password.touched">
+                <div class="text-warning" *ngIf="password.errors.required">
+                  Password required.
+                </div>
+              </div>
+              <input
+                class="sign-up form-control"
+                type="password"
+                placeholder="Repeat Password"
+                formControlName="repeatPassword"
+                name="repeatPassword"
+              />
+              <div
+                class="text-warning"
+                *ngIf="repeatPassword.touched && repeatPassword.errors"
+              >
+                Passwords must match.
+              </div>
+              <button
+                id="submit-button"
+                [disabled]="!isReady"
+                (click)="onFormSubmit()"
+                type="submit"
+                class="btn btn-primary my-4"
+              ></button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

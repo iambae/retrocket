@@ -1,48 +1,58 @@
 import { ColorService } from "src/app/services/color.service";
 import { BoardService } from "src/app/services/board.service";
-import { Observable, Subscription } from "rxjs";
-import { map as rxMap, switchMap, withLatestFrom } from "rxjs/operators";
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Observable } from "rxjs";
+import { map as rxMap, withLatestFrom } from "rxjs/operators";
+import { Component, OnInit } from "@angular/core";
 import { Card, Column, Board, Color } from "src/app/models/index";
 import { ColumnService } from "src/app/services/column.service";
 import { CardService } from "src/app/services/card.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-dashboard",
   templateUrl: "./dashboard.component.html",
   providers: [BoardService],
 })
-export class DashboardComponent implements OnInit, OnDestroy {
-  cards: any = {};
-  cardSubsription: Subscription;
-  color$: Observable<Color>;
-  colors$: Observable<Color[]>;
+export class DashboardComponent implements OnInit {
   boardId: string;
   board$: Observable<Board>;
+  cards: any = {};
   columns$: Observable<Column[]>;
+  color$: Observable<Color>;
+  colors$: Observable<Color[]>;
 
   constructor(
     private boardService: BoardService,
     private cardService: CardService,
     private colorService: ColorService,
-    private columnService: ColumnService
+    private columnService: ColumnService,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.boardId = window.location.pathname.split("/boards/")[1];
-    this.board$ = this.boardService.getBoard(this.boardId);
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+    this.boardId = window.location.pathname.split("/board/")[1];
+    this.board$ = this.boardService.getBoard(this.boardId).pipe(
+      rxMap((board) => {
+        currentUser.uid === board.author ||
+        board.team.includes(currentUser.displayName)
+          ? this.initBoard(board)
+          : this.router.navigate(["/join", board.id]);
+        return board;
+      })
+    );
+  }
 
+  initBoard(board: Board) {
     this.colors$ = this.colorService.getColors();
-    this.color$ = this.board$.pipe(
-      switchMap((board) => this.colorService.getColor(board.color)),
+    this.color$ = this.colorService.getColor(board.color).pipe(
       withLatestFrom(this.colors$),
       rxMap(([selectedColor, colors]) =>
         colors.find((color) => selectedColor.id === color.id)
       )
     );
-
     this.columns$ = this.columnService.getColumns();
-    this.cardSubsription = this.cardService
+    this.cardService
       .getCards(this.boardId)
       .pipe(
         withLatestFrom(this.columns$),
@@ -71,9 +81,5 @@ export class DashboardComponent implements OnInit, OnDestroy {
       case "delete":
         this.cardService.deleteCard(event.data, this.boardId);
     }
-  }
-
-  ngOnDestroy() {
-    this.cardSubsription.unsubscribe();
   }
 }

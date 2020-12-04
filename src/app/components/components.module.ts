@@ -17,10 +17,9 @@ import {
   DialogComponent,
 } from "./dashboard/dashboard-list.component";
 import { DashboardListItemComponent } from "./dashboard/dashboard-list-item.component";
-import { LoginComponent } from "./login/login.component";
 import { AddClassDirective } from "../shared/add-class.directive";
-import { RegisterComponent } from "./register/register.component";
 import { JoinComponent } from "./join/join.component";
+import { AuthComponent } from "./auth/auth.component";
 
 @NgModule({
   imports: [
@@ -38,8 +37,6 @@ import { JoinComponent } from "./join/join.component";
     DashboardListComponent,
     DialogComponent,
     DashboardListItemComponent,
-    LoginComponent,
-    RegisterComponent,
     MenubarComponent,
     MenuComponent,
     ColumnComponent,
@@ -47,14 +44,13 @@ import { JoinComponent } from "./join/join.component";
     CardComponent,
     AddClassDirective,
     JoinComponent,
+    AuthComponent,
   ],
   exports: [
     DashboardComponent,
     DashboardListComponent,
     DialogComponent,
     DashboardListItemComponent,
-    LoginComponent,
-    RegisterComponent,
     MenubarComponent,
     MenuComponent,
     ColumnComponent,
