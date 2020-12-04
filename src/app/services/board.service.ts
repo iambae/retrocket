@@ -17,9 +17,7 @@ export class BoardService {
     this.boards$ = this.afAuth.user.pipe(
       switchMap((user) =>
         this.firestoreService
-          .collection("boards", (collectionRef) =>
-            collectionRef.where("author", "==", user.uid)
-          )
+          .collection("boards")
           .snapshotChanges()
           .pipe(
             rxMap((changes) =>
@@ -51,11 +49,16 @@ export class BoardService {
   }
 
   addBoard(board) {
-    this.firestoreService
-      .collection("boards")
-      .doc(board.id)
+    const boardDoc = this.firestoreService
+      .collection<Board[]>("boards")
+      .doc<Board>().ref;
+
+    const id = boardDoc.id;
+
+    boardDoc
       .set({
         ...board,
+        id,
         created: firebase.firestore.Timestamp.fromDate(new Date()),
       })
       .then(() => console.log(`New board <${board.name}> created!`))
@@ -79,5 +82,31 @@ export class BoardService {
       .delete()
       .then(() => console.log("Document successfully deleted!"))
       .catch((error) => console.error("Error removing document: ", error));
+  }
+
+  getBoardTeam(boardId: string): Observable<string[]> {
+    return this.boards$.pipe(
+      rxMap((boards) => boards.find((board) => board.id === boardId).team)
+    );
+  }
+
+  updateBoardTeam(boardId: string, { type, member }) {
+    this.firestoreService
+      .doc(`boards/${boardId}`)
+      .update(
+        type === "add"
+          ? {
+              team: firebase.firestore.FieldValue.arrayUnion(member),
+            }
+          : type === "remove"
+          ? {
+              team: firebase.firestore.FieldValue.arrayRemove(member),
+            }
+          : {
+              team: [],
+            }
+      )
+      .then(() => console.log(`Team of board ${boardId} updated!`))
+      .catch((error) => console.error("Error updating board team: ", error));
   }
 }

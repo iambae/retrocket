@@ -8,7 +8,7 @@ import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 import { switchMap } from "rxjs/operators";
 import { Subscription } from "rxjs";
 import { v4 as uuidv4 } from "uuid";
-import { AuthService } from "src/app/auth/auth.service";
+import { AuthService } from "src/app/services/auth.service";
 import { BoardService } from "src/app/services/board.service";
 import { Board } from "src/app/models";
 
@@ -85,7 +85,6 @@ export class DashboardListComponent implements OnInit, OnDestroy {
 
   addBoard({ name, memo }) {
     const board = {
-      id: uuidv4(),
       author: this.userId,
       name,
       memo,

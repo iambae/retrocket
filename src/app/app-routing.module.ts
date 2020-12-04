@@ -1,37 +1,40 @@
-import { JoinComponent } from "./components/join/join.component";
-import { RegisterComponent } from "./components/register/register.component";
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { BrowserModule } from "@angular/platform-browser";
 import { Routes, RouterModule } from "@angular/router";
-import { LoginComponent } from "./components/login/login.component";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
 import { DashboardListComponent } from "./components/dashboard/dashboard-list.component";
-import { AuthGuard } from "./auth/auth.guard";
-import { AnonGuard } from "./auth/anon.guard";
+import { NotFoundComponent } from "./components/not-found/not-found.component";
+import { JoinComponent } from "./components/join/join.component";
+import { AuthGuard } from "./guards/auth.guard";
+import { AnonGuard } from "./guards/anon.guard";
+import { BoardGuard } from "./guards/board.guard";
+import { AuthComponent } from "./components/auth/auth.component";
 
 const routes: Routes = [
   {
-    path: "login",
-    component: LoginComponent,
+    path: "start",
+    component: AuthComponent,
   },
   {
     path: "join/:id",
     component: JoinComponent,
+    canActivate: [BoardGuard],
   },
   {
-    path: "boards/:id",
+    path: "board/:id",
     component: DashboardComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard, BoardGuard],
   },
   {
     path: "boards",
     component: DashboardListComponent,
     canActivate: [AnonGuard],
   },
-
-  { path: "register", component: RegisterComponent },
-
+  {
+    path: "not-found",
+    component: NotFoundComponent,
+  },
   {
     path: "",
     redirectTo: "boards",
