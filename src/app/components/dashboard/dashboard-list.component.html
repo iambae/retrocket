@@ -13,7 +13,7 @@
 </div>
 <div *ngIf="boards" class="container-fluid mt--7">
   <div class="row">
-    <div class="col" style="margin-bottom: 20px">
+    <div class="col rt-table">
       <div class="card shadow">
         <div class="card-header">
           <div class="row">
@@ -21,6 +21,13 @@
               <h2 class="mb-0">Past Retrospective Sessions</h2>
             </div>
             <div class="col">
+              <button
+                type="button"
+                class="btn btn-lg btn-outline-default float-right"
+                (click)="onClickSignout()"
+              >
+                <i class="fas fa-plus-circle"></i>Sign out
+              </button>
               <button
                 type="button"
                 class="btn btn-lg btn-outline-default float-right"

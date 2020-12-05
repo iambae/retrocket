@@ -30,8 +30,11 @@ export class ColumnComponent {
   colTitle: string;
   isAddingCard = false;
   cardText: string;
+  isAuthor: boolean;
 
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef) {
+    this.isAuthor = !JSON.parse(localStorage.getItem("user")).isAnonymous;
+  }
 
   canAddCard() {
     return this.cardText && this.cardText.trim() !== "";

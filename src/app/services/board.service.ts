@@ -90,8 +90,8 @@ export class BoardService {
     );
   }
 
-  updateBoardTeam(boardId: string, { type, member }) {
-    this.firestoreService
+  async updateBoardTeam(boardId: string, { type, member }) {
+    await this.firestoreService
       .doc(`boards/${boardId}`)
       .update(
         type === "add"

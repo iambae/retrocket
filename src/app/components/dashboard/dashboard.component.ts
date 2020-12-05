@@ -67,7 +67,12 @@ export class DashboardComponent implements OnInit {
   }
 
   updateBoard({ field, value }) {
-    this.boardService.updateBoard(this.boardId, { [field]: value });
+    if (field === "team")
+      this.boardService.updateBoardTeam(this.boardId, {
+        type: "remove",
+        member: value,
+      });
+    else this.boardService.updateBoard(this.boardId, { [field]: value });
   }
 
   handleCardEvent(event: { type: string; data: Card }) {

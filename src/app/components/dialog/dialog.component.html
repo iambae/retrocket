@@ -1,0 +1,36 @@
+<h2>{{ title }}</h2>
+<ng-container *ngIf="title !== 'Share'; else shareModal">
+  <mat-dialog-content [formGroup]="form">
+    <mat-form-field appearance="none">
+      <input
+        matInput
+        class="form-control"
+        placeholder="Name"
+        formControlName="name"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="none">
+      <textarea
+        matInput
+        class="form-control"
+        placeholder="Memo"
+        formControlName="memo"
+      ></textarea>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button [disabled]="!form.valid" class="btn" (click)="save()">
+      <i class="fas fa-check fa-lg"></i>
+    </button>
+  </mat-dialog-actions>
+</ng-container>
+
+<ng-template #shareModal>
+  <input type="text" [value]="url" id="myInput" />
+  <div class="tooltip">
+    <button class="btn" (click)="copyUrl()" (mouseout)="outFunc()">
+      <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+      Copy text
+    </button>
+  </div>
+</ng-template>

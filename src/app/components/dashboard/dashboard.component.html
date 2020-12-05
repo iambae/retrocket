@@ -1,6 +1,7 @@
 <app-menubar
   [color]="color$ | async"
   [colors]="colors$ | async"
+  [team]="(board$ | async)?.team"
   [boardName]="(board$ | async)?.name"
   (boardUpdate)="updateBoard($event)"
 ></app-menubar>
