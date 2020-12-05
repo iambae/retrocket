@@ -13,8 +13,9 @@ import { AuthComponent } from "./components/auth/auth.component";
 
 const routes: Routes = [
   {
-    path: "start",
-    component: AuthComponent,
+    path: "boards",
+    component: DashboardListComponent,
+    canActivate: [AnonGuard],
   },
   {
     path: "join/:id",
@@ -27,13 +28,12 @@ const routes: Routes = [
     canActivate: [AuthGuard, BoardGuard],
   },
   {
-    path: "boards",
-    component: DashboardListComponent,
-    canActivate: [AnonGuard],
-  },
-  {
     path: "not-found",
     component: NotFoundComponent,
+  },
+  {
+    path: "start",
+    component: AuthComponent,
   },
   {
     path: "",

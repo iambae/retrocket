@@ -19,7 +19,15 @@ export class AuthService {
         password
       );
       console.log("Email and password signup success!", value.user);
-      localStorage.setItem("user", JSON.stringify(value.user));
+      const userData = JSON.parse(JSON.stringify(value.user));
+      const user = {
+        email: userData.email,
+        isAnonymous: userData.isAnonymous,
+        uid: userData.uid,
+        displayName: "",
+        photoURL: "",
+      };
+      localStorage.setItem("user", JSON.stringify(user));
       return value.user;
     } catch (err) {
       console.error("Something went wrong during signup:", err);
@@ -34,7 +42,17 @@ export class AuthService {
       );
 
       console.log("Email and password signin success!", value.user);
-      localStorage.setItem("user", JSON.stringify(value.user));
+
+      const userData = JSON.parse(JSON.stringify(value.user));
+      const user = {
+        email: userData.email,
+        isAnonymous: userData.isAnonymous,
+        uid: userData.uid,
+        displayName: "",
+        photoURL: "",
+      };
+
+      localStorage.setItem("user", JSON.stringify(user));
       return value.user;
     } catch (err) {
       console.error("Something went wrong during email+pw signin:", err);
@@ -46,10 +64,14 @@ export class AuthService {
       const value = await this.afAuth.signInAnonymously();
 
       // Deep clone value.user object ignoring internal properties
+      const userData = JSON.parse(JSON.stringify(value.user));
       const user = {
-        ...JSON.parse(JSON.stringify(value.user)),
+        email: userData.email,
+        isAnonymous: userData.isAnonymous,
         displayName: username,
         photoURL: avatarUrl,
+        uid: userData.uid,
+        lastJoined: "",
       };
 
       console.log("Anonymous signin success!", user);
@@ -62,8 +84,10 @@ export class AuthService {
 
   async logout() {
     try {
+      const user = JSON.parse(localStorage.getItem("user"));
       localStorage.removeItem("user");
-      return await this.afAuth.signOut();
+      await this.afAuth.signOut();
+      return user;
     } catch (err) {
       console.error("Something went wrong during logout:", err);
     }
@@ -71,12 +95,12 @@ export class AuthService {
 
   resetPassword(email: string) {
     const actionCodeSettings = {
-      url: "https://www.example.com/?email=user@example.com",
+      url: "https://retrocket-app.firebaseapp.com/start",
       handleCodeInApp: true,
     };
 
     this.afAuth
-      .sendPasswordResetEmail(email)
+      .sendPasswordResetEmail(email, actionCodeSettings)
       .then(() => {
         console.log("Password reset email sent.");
       })

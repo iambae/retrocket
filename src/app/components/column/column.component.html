@@ -11,10 +11,10 @@
           [ngStyle]="{ color: '#6d7994' }"
           [innerHtml]="column.title"
           [style.display]="isEditingCol ? 'none' : ''"
-          (click)="editColumn()"
+          (click)="isAuthor ? editColumn() : ''"
         ></h4>
         <input
-          [style.display]="isEditingCol ? '' : 'none'"
+          [style.display]="isAuthor && isEditingCol ? '' : 'none'"
           (blur)="updateColumnOnBlur()"
           (keyup)="updateColumnOnEnter($event)"
           [(ngModel)]="column.title"

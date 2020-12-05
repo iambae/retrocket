@@ -18,6 +18,7 @@ export class AuthComponent {
   form: FormGroup;
   formId: number = 0;
   loggedIn: boolean;
+  isAuthor: boolean;
   quote: { author: string; text: string };
 
   constructor(public authService: AuthService, private router: Router) {
@@ -32,7 +33,9 @@ export class AuthComponent {
     });
     this.form.setValidators(this.checkPasswords());
     this.quote = quotes[Math.floor(Math.random() * quotes.length)];
-    this.loggedIn = localStorage.getItem("user") ? true : false;
+    this.isAuthor =
+      !!localStorage.getItem("user") &&
+      !JSON.parse(localStorage.getItem("user")).isAnonymous;
   }
 
   checkPasswords() {
@@ -84,17 +87,17 @@ export class AuthComponent {
     const { email, password } = this.form.value;
 
     switch (this.formId) {
-      case 0:
+      case 0: // sign in form
         this.authService
           .login(email, password)
           .then(() => this.router.navigate(["/boards"]));
         break;
-      case 1:
+      case 1: // sign up form
         this.authService
           .signup(email, password)
           .then(() => this.router.navigate(["/boards"]));
         break;
-      case 2:
+      case 2: // password reset form
         this.authService.resetPassword(email);
         break;
     }
@@ -103,6 +106,6 @@ export class AuthComponent {
   }
 
   onClickLogout() {
-    this.authService.logout().then(() => (this.loggedIn = false));
+    this.authService.logout().then(() => (this.isAuthor = false));
   }
 }

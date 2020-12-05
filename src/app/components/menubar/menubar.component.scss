@@ -1,0 +1,42 @@
+.board-name {
+  display: flex;
+  float: right;
+  margin-left: auto;
+  margin-right: 25px;
+  align-items: center;
+}
+
+.board-name input {
+  color: #525f7f;
+  font-style: oblique;
+  font-size: 2rem;
+  font-family: "aventraregular";
+  text-transform: uppercase;
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-bottom: transparent 3px solid;
+  outline: 0;
+  transition: 0.35s ease;
+}
+
+.board-name input:hover,
+.board-name input:focus {
+  background-color: #f1f1f1;
+  border-bottom: #ddd 3px dotted;
+}
+
+.board-name:after {
+  position: absolute;
+  top: 1rem;
+  left: 0.5rem;
+  color: gray;
+}
+
+.board-name div {
+  float: left;
+}
+
+.navbar-horizontal .navbar-nav .nav-link {
+  font-weight: 700;
+}

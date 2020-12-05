@@ -63,6 +63,11 @@ export class JoinComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.boardId = window.location.pathname.split("/join/")[1];
+
+    // If user already joined this board, exit join flow
+    let redirectUrl = JSON.parse(localStorage.getItem("user")).lastJoined;
+    if (redirectUrl) this.router.navigate(["/board", redirectUrl]);
+
     this.userReady$ = this.usernameSubject.pipe(
       debounceTime(700),
       distinctUntilChanged(),
@@ -83,16 +88,29 @@ export class JoinComponent implements OnInit, OnDestroy {
     this.usernameSubject.next(name);
   }
 
-  joinBoard() {
+  async joinBoard() {
+    await this.removeCurrentUser();
+
     this.authService
       .signInAnonymously(this.username, this.avatarUrl)
-      .then((user) => {
-        this.boardService.updateBoardTeam(this.boardId, {
+      .then(async (newUser) => {
+        await this.boardService.updateBoardTeam(this.boardId, {
           type: "add",
-          member: user.displayName,
+          member: newUser.displayName,
         });
+        newUser.lastJoined = this.boardId; // save this board to local user
+        localStorage.setItem("user", JSON.stringify(newUser));
         this.router.navigate(["/board", this.boardId]);
         this.usernameSubject.complete();
+      });
+  }
+
+  async removeCurrentUser() {
+    const currentUser = JSON.parse(localStorage.getItem("user"));
+    if (currentUser)
+      await this.boardService.updateBoardTeam(currentUser.lastJoined, {
+        type: "remove",
+        member: currentUser.displayName,
       });
   }
 
