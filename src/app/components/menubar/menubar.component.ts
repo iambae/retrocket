@@ -24,7 +24,7 @@ export class MenubarComponent {
     private router: Router,
     public dialog: MatDialog
   ) {
-    this.user = JSON.parse(localStorage.getItem("user"));
+    this.user = JSON.parse(sessionStorage.getItem("user"));
   }
 
   toggleColor(color: Color) {

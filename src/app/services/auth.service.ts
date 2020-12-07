@@ -27,7 +27,7 @@ export class AuthService {
         displayName: "",
         photoURL: "",
       };
-      localStorage.setItem("user", JSON.stringify(user));
+      sessionStorage.setItem("user", JSON.stringify(user));
       return value.user;
     } catch (err) {
       console.error("Something went wrong during signup:", err);
@@ -52,7 +52,7 @@ export class AuthService {
         photoURL: "",
       };
 
-      localStorage.setItem("user", JSON.stringify(user));
+      sessionStorage.setItem("user", JSON.stringify(user));
       return value.user;
     } catch (err) {
       console.error("Something went wrong during email+pw signin:", err);
@@ -75,7 +75,7 @@ export class AuthService {
       };
 
       console.log("Anonymous signin success!", user);
-      localStorage.setItem("user", JSON.stringify(user));
+      sessionStorage.setItem("user", JSON.stringify(user));
       return user;
     } catch (err) {
       console.error("Something went wrong during anonymous signin:", err);
@@ -84,8 +84,8 @@ export class AuthService {
 
   async logout() {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      localStorage.removeItem("user");
+      const user = JSON.parse(sessionStorage.getItem("user"));
+      sessionStorage.removeItem("user");
       await this.afAuth.signOut();
       return user;
     } catch (err) {
