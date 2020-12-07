@@ -3,9 +3,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 interface DialogData {
-  function: "Share";
-  Create;
-  Delete;
+  function: "Share" | "Create" | "Delete";
   title: string;
   copyUrl?: string;
   name?: string;
