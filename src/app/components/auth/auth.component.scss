@@ -1,6 +1,6 @@
-$color-body: #f37831;
-$color-accent: rgba(233, 152, 105, 0.678);
-$color-light: #f88253ea;
+$color-body: #6b40bb;
+$color-accent: rgba(154, 105, 233, 0.678);
+$color-light: #8565c0ea;
 $color-input: rgb(255, 255, 255);
 
 input[type="radio"] {
@@ -33,6 +33,11 @@ input:not([type="radio"]) {
   padding: 10px;
   margin: 10px 0;
   opacity: 1;
+}
+
+button.auth {
+  color: white;
+  background-color: #856ac5;
 }
 
 button#submit-button {
@@ -92,7 +97,7 @@ label {
   width: 70%;
   margin: auto;
   margin-top: 30px;
-  padding: 10px;
+  padding: 20px;
   margin-bottom: 10px;
   border-radius: 7px;
   color: black !important;

@@ -17,7 +17,6 @@ import { quotes } from "../../../assets/data/quotes.js";
 export class AuthComponent {
   form: FormGroup;
   formId: number = 0;
-  loggedIn: boolean;
   isAuthor: boolean;
   quote: { author: string; text: string };
 
@@ -90,12 +89,12 @@ export class AuthComponent {
       case 0: // sign in form
         this.authService
           .login(email, password)
-          .then(() => this.router.navigate(["/boards"]));
+          .then(() => this.router.navigate(["/dashboard"]));
         break;
       case 1: // sign up form
         this.authService
           .signup(email, password)
-          .then(() => this.router.navigate(["/boards"]));
+          .then(() => this.router.navigate(["/dashboard"]));
         break;
       case 2: // password reset form
         this.authService.resetPassword(email);

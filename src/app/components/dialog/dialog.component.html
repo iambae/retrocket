@@ -1,5 +1,5 @@
-<h2>{{ title }}</h2>
-<ng-container *ngIf="title !== 'Share'; else shareModal">
+<h2 class="text-uppercase">{{ dialogData.title }}</h2>
+<ng-container *ngIf="dialogData.function === 'Create'">
   <mat-dialog-content [formGroup]="form">
     <mat-form-field appearance="none">
       <input
@@ -25,12 +25,21 @@
   </mat-dialog-actions>
 </ng-container>
 
-<ng-template #shareModal>
-  <input type="text" [value]="url" id="myInput" />
-  <div class="tooltip">
-    <button class="btn" (click)="copyUrl()" (mouseout)="outFunc()">
-      <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
-      Copy text
-    </button>
+<ng-container *ngIf="dialogData.function === 'Share'">
+  <div class="tooltip-container">
+    <input type="text" [value]="dialogData.copyUrl" id="copy-before" />
+    <div class="tooltip-rt">
+      <button class="btn" (click)="copy()" (mouseout)="onMouseOut()">
+        Copy text
+      </button>
+      <span id="copy-after"></span>
+    </div>
   </div>
-</ng-template>
+</ng-container>
+
+<ng-container *ngIf="dialogData.function === 'Delete'">
+  <mat-dialog-actions style="padding: 30px">
+    <button class="cancel btn" (click)="confirm('Cancel')">No</button>
+    <button class="confirm btn" (click)="confirm('Delete')">Yes</button>
+  </mat-dialog-actions>
+</ng-container>

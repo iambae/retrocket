@@ -41,8 +41,12 @@
       <i class="fas fa-ellipsis-v"></i>
     </a>
     <div ngbDropdownMenu class="dropdown-menu-right dropdown-menu-arrow" ml-0>
-      <a ngbDropdownItem>Share</a>
-      <a ngbDropdownItem (click)="onClickDelete()">Delete</a>
+      <a class="text-uppercase" ngbDropdownItem (click)="onClickShare()"
+        ><i class="fas fa-share"></i>Share</a
+      >
+      <a class="text-uppercase" ngbDropdownItem (click)="onClickDelete()"
+        ><i class="fas fa-trash-alt"></i>Delete</a
+      >
     </div>
   </div>
 </td>

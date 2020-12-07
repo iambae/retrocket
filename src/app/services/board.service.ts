@@ -6,7 +6,9 @@ import { Board } from "../models/index";
 import { AngularFireAuth } from "@angular/fire/auth";
 import firebase from "firebase/app";
 
-@Injectable()
+@Injectable({
+  providedIn: "root",
+})
 export class BoardService {
   boards$: Observable<Board[]>;
 

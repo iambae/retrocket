@@ -1,0 +1,27 @@
+p.status {
+  margin-top: 20px;
+}
+
+img.loading {
+  padding: 60px;
+  text-align: center;
+  margin: auto;
+}
+
+div.card-body {
+  justify-content: center;
+  align-items: center;
+  display: grid;
+  text-align: center;
+}
+
+div.input-container {
+  padding: 5px;
+  background-color: white;
+}
+
+input {
+  width: 100%;
+  border: none;
+  border-radius: 1.3rem;
+}

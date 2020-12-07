@@ -12,8 +12,8 @@ import { CardComponent } from "./card/card.component";
 import { ColumnHeaderComponent } from "./column-header/column-header.component";
 import { ColumnComponent } from "./column/column.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
-import { DashboardListComponent } from "./dashboard/dashboard-list.component";
-import { DashboardListItemComponent } from "./dashboard/dashboard-list-item.component";
+import { BoardComponent } from "./board/board.component";
+import { DashboardItemComponent } from "./dashboard/dashboard-item/dashboard-item.component";
 import { AddClassDirective } from "../shared/add-class.directive";
 import { JoinComponent } from "./join/join.component";
 import { AuthComponent } from "./auth/auth.component";
@@ -32,9 +32,9 @@ import { DialogComponent } from "./dialog/dialog.component";
   ],
   declarations: [
     DashboardComponent,
-    DashboardListComponent,
+    DashboardItemComponent,
+    BoardComponent,
     DialogComponent,
-    DashboardListItemComponent,
     MenubarComponent,
     MenuComponent,
     ColumnComponent,
@@ -46,9 +46,9 @@ import { DialogComponent } from "./dialog/dialog.component";
   ],
   exports: [
     DashboardComponent,
-    DashboardListComponent,
+    DashboardItemComponent,
+    BoardComponent,
     DialogComponent,
-    DashboardListItemComponent,
     MenubarComponent,
     MenuComponent,
     ColumnComponent,

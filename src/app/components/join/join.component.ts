@@ -6,45 +6,15 @@ import {
   debounceTime,
   withLatestFrom,
   map as rxMap,
+  filter,
 } from "rxjs/operators";
 import { BoardService } from "src/app/services/board.service";
 import { Router } from "@angular/router";
-import { ThrowStmt } from "@angular/compiler";
 
 @Component({
   selector: "app-join",
   templateUrl: "./join.component.html",
-  styles: [
-    `
-      p.status {
-        margin-top: 20px;
-      }
-
-      img.loading {
-        padding: 60px;
-        text-align: center;
-        margin: auto;
-      }
-
-      div.card-body {
-        justify-content: center;
-        align-items: center;
-        display: grid;
-        text-align: center;
-      }
-
-      div.input-container {
-        padding: 5px;
-        background-color: white;
-      }
-
-      input {
-        width: 100%;
-        border: none;
-        border-radius: 1.3rem;
-      }
-    `,
-  ],
+  styleUrls: ["join.component.scss"],
 })
 export class JoinComponent implements OnInit, OnDestroy {
   boardId: string;
@@ -65,20 +35,17 @@ export class JoinComponent implements OnInit, OnDestroy {
     this.boardId = window.location.pathname.split("/join/")[1];
 
     // If user already joined this board, exit join flow
-    let redirectUrl = JSON.parse(localStorage.getItem("user")).lastJoined;
-    if (redirectUrl) this.router.navigate(["/board", redirectUrl]);
+    let lastUser = JSON.parse(localStorage.getItem("user"));
+    if (lastUser) this.router.navigate(["/board", lastUser.lastJoined]);
 
     this.userReady$ = this.usernameSubject.pipe(
+      filter((username) => username.length > 0),
       debounceTime(700),
       distinctUntilChanged(),
       withLatestFrom(this.boardService.getBoardTeam(this.boardId)),
       rxMap(([username, team]) => {
-        this.isLoading = true;
-        this.avatarUrl =
-          username.length > 0
-            ? `https://robohash.org/${username}.png?set=set3`
-            : "";
-        this.usernameTaken = team.includes(username.toLowerCase());
+        this.avatarUrl = `https://robohash.org/${username}.png?set=set3`;
+        this.usernameTaken = team.includes(username);
         return !this.usernameTaken;
       })
     );
