@@ -1,0 +1,41 @@
+span.rt-span {
+  border: none;
+  background-color: transparent;
+}
+
+.dropdown-menu.show > .dropdown-item {
+  margin-left: 0px;
+  text-align: center;
+  font-size: 0.9rem;
+  display: flex;
+
+  &:active {
+    background-color: lightgray;
+  }
+
+  & > i {
+    margin-right: 0.4rem;
+    font-size: 1rem;
+  }
+}
+
+.table td,
+.table th {
+  font-size: 1rem;
+}
+
+td {
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+td.actions-menu {
+  overflow: visible;
+}
+
+img.filter {
+  filter: brightness(0) invert(1);
+  height: 70%;
+  width: 70%;
+}

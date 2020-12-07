@@ -3,7 +3,7 @@ import { CommonModule } from "@angular/common";
 import { BrowserModule } from "@angular/platform-browser";
 import { Routes, RouterModule } from "@angular/router";
 import { DashboardComponent } from "./components/dashboard/dashboard.component";
-import { DashboardListComponent } from "./components/dashboard/dashboard-list.component";
+import { BoardComponent } from "./components/board/board.component";
 import { NotFoundComponent } from "./components/not-found/not-found.component";
 import { JoinComponent } from "./components/join/join.component";
 import { AuthGuard } from "./guards/auth.guard";
@@ -13,8 +13,8 @@ import { AuthComponent } from "./components/auth/auth.component";
 
 const routes: Routes = [
   {
-    path: "boards",
-    component: DashboardListComponent,
+    path: "dashboard",
+    component: DashboardComponent,
     canActivate: [AnonGuard],
   },
   {
@@ -24,7 +24,7 @@ const routes: Routes = [
   },
   {
     path: "board/:id",
-    component: DashboardComponent,
+    component: BoardComponent,
     canActivate: [AuthGuard, BoardGuard],
   },
   {
@@ -37,12 +37,12 @@ const routes: Routes = [
   },
   {
     path: "",
-    redirectTo: "boards",
+    redirectTo: "dashboard",
     pathMatch: "full",
   },
   {
     path: "**",
-    redirectTo: "boards",
+    redirectTo: "dashboard",
   },
 ];
 

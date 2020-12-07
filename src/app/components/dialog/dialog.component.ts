@@ -1,11 +1,15 @@
-import { Component, Inject, Input } from "@angular/core";
+import { Component, Inject } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 interface DialogData {
+  function: "Share";
+  Create;
+  Delete;
   title: string;
-  memo?: string;
+  copyUrl?: string;
   name?: string;
+  memo?: string;
 }
 
 @Component({
@@ -14,9 +18,7 @@ interface DialogData {
   styleUrls: ["./dialog.component.scss"],
 })
 export class DialogComponent {
-  url: string;
   form: FormGroup;
-  title: string;
   dialogData: DialogData;
 
   constructor(
@@ -30,32 +32,30 @@ export class DialogComponent {
       name: [data.name, Validators.required],
       memo: [data.memo],
     });
-
-    this.title = data.title;
-    this.url = window.location.href;
   }
 
   save() {
     this.dialogRef.close(this.form.value);
   }
 
-  copyUrl() {
-    /* Get the text field */
-    let copyText = document.getElementById("myInput") as HTMLInputElement;
-
-    /* Select the text field */
+  copy() {
+    // Get input field with url to copy
+    let copyText = document.getElementById("copy-before") as HTMLInputElement;
     copyText.select();
-    copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+    copyText.setSelectionRange(0, 99999);
 
-    /* Copy the text inside the text field */
+    // Drag and copy url
     document.execCommand("copy");
-
-    let tooltip = document.getElementById("myTooltip");
-    tooltip.innerHTML = "Copied: " + copyText.value;
+    let tooltip = document.getElementById("copy-after");
+    tooltip.innerHTML = "Copied!";
   }
 
-  outFunc() {
-    let tooltip = document.getElementById("myTooltip");
+  confirm(res: string) {
+    this.dialogRef.close(res);
+  }
+
+  onMouseOut() {
+    let tooltip = document.getElementById("copy-after");
     tooltip.innerHTML = "Copy to clipboard";
   }
 }

@@ -1,5 +1,5 @@
 .form-control {
-  border-radius: 10px;
+  border-radius: 0.4rem;
   border-style: dashed;
   border-width: medium;
   border-color: rgba(223, 222, 222, 0.9);
@@ -17,18 +17,68 @@ button:hover {
   transition: none;
 }
 
-button {
-  margin: auto;
+.tooltip-rt > button {
+  margin-left: 10px;
 }
 
-.tooltip {
+.mat-dialog-actions > button {
+  width: 60px;
+  height: 60px;
+  justify-content: center;
+  align-content: center;
+  display: grid;
+  background-color: transparent;
+  border-style: dashed;
+  border-width: 2px;
+
+  &.cancel {
+    color: rgb(197, 79, 79);
+    border-color: rgba(255, 0, 0, 0.6);
+    margin-right: 30px;
+
+    &:hover {
+      color: white;
+      background-color: rgba(187, 56, 56, 0.7);
+      border: none;
+    }
+  }
+
+  &.confirm {
+    color: rgb(71, 189, 71);
+    border-color: rgba(0, 128, 0, 0.6);
+    margin-left: 30px;
+
+    &:hover {
+      color: white;
+      background-color: rgba(53, 143, 53, 0.7);
+      border: none;
+    }
+  }
+}
+
+.tooltip-container {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#copy-before {
+  float: left;
+  width: 70%;
+  background-color: rgba(255, 255, 255, 0);
+  border-radius: 5px;
+  border-color: rgba(223, 222, 222, 0.9);
+  border-style: dashed;
+  border-width: medium;
+}
+
+.tooltip-rt {
   position: relative;
   display: inline-block;
 }
 
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 140px;
+.tooltip-rt #copy-after {
   background-color: #555;
   color: #fff;
   text-align: center;
@@ -36,25 +86,25 @@ button {
   padding: 5px;
   position: absolute;
   z-index: 1;
-  bottom: 150%;
+  bottom: 110%;
   left: 50%;
-  margin-left: -75px;
+  margin-left: -55px;
   opacity: 0;
   transition: opacity 0.3s;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
 }
 
-.tooltip .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
-}
-
-.tooltip:hover .tooltiptext {
+.tooltip-rt:hover #copy-after {
   visibility: visible;
   opacity: 1;
 }

@@ -1,38 +1,62 @@
-<app-menubar
-  [color]="color$ | async"
-  [colors]="colors$ | async"
-  [team]="(board$ | async)?.team"
-  [boardName]="(board$ | async)?.name"
-  (boardUpdate)="updateBoard($event)"
-></app-menubar>
-<div>
-  <div class="header pb-8 pt-5" [ngClass]="(color$ | async)?.name">
-    <div class="container-fluid">
-      <div class="header-body">
-        <div class="row">
-          <div
-            class="col-xl-3 col-lg-6"
-            *ngFor="let column of columns$ | async"
-          >
-            <app-column-header
-              [column]="column"
-              [count]="cards[column.order]?.length"
-            ></app-column-header>
-          </div>
+<div class="header bg-gradient-purple py-5 py-lg-6" style="zoom: 1.3">
+  <div class="container">
+    <div class="header-body text-center mt--4 mb-7">
+      <div class="justify-content-center">
+        <div class="col-lg-5 col-md-6">
+          <a class="navbar-brand">
+            <img class="logo" src="assets/img/brand/retrocket-white.png" />
+          </a>
         </div>
       </div>
     </div>
   </div>
-  <div class="container-fluid mt--8 mb-5 px-5">
-    <div class="row mt-5">
-      <div class="col-xl-3 col-lg-6" *ngFor="let column of columns$ | async">
-        <app-column
-          [column]="column"
-          [cards]="cards[column.order]"
-          (update)="updateColumn($event)"
-          (cardEvent)="handleCardEvent($event)"
-        ></app-column>
+</div>
+<div *ngIf="boards" class="container-fluid mt--7" style="zoom: 1.3">
+  <div class="row">
+    <div class="col rt-table">
+      <div class="card shadow">
+        <div class="card-header">
+          <div class="row">
+            <div class="col">
+              <h2 class="mb-0">Past Retrospective Sessions</h2>
+            </div>
+            <div class="col" style="padding-right: 0">
+              <button
+                type="button"
+                class="btn btn-lg btn-outline-default float-right"
+                (click)="onClickSignout()"
+              >
+                <i class="fas fa-plus-circle"></i>Sign out
+              </button>
+              <button
+                type="button"
+                class="btn btn-lg btn-outline-default float-right"
+                (click)="openDialog()"
+              >
+                <i class="fas fa-plus-circle"></i>New Session
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th style="width: 30%" scope="col">Session</th>
+                <th style="width: 20%" scope="col">Created</th>
+                <th style="width: 40%" scope="col">Memo</th>
+                <th style="width: 10%" scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let board of boards"
+                ><tr app-dashboard-item [board]="board"></tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </div>
+<router-outlet></router-outlet>

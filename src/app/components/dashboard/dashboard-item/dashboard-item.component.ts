@@ -9,48 +9,19 @@ import {
 import { Router } from "@angular/router";
 import { Board } from "src/app/models";
 import { BoardService } from "src/app/services/board.service";
+import { MatDialog } from "@angular/material/dialog";
+import { DialogComponent } from "../../dialog/dialog.component";
 
 @Component({
-  selector: "[app-dashboard-list-item]",
-  templateUrl: "./dashboard-list-item.component.html",
-  styles: [
-    `
-      span.rt-span {
-        border: none;
-        background-color: transparent;
-      }
-
-      .dropdown-menu.show > .dropdown-item {
-        margin-left: 0px;
-      }
-
-      .table td,
-      .table th {
-        font-size: 1rem;
-      }
-
-      td {
-        white-space: normal;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      td.actions-menu {
-        overflow: visible;
-      }
-
-      img.filter {
-        filter: brightness(0) invert(1);
-        height: 70%;
-        width: 70%;
-      }
-    `,
-  ],
+  selector: "[app-dashboard-item]",
+  templateUrl: "./dashboard-item.component.html",
+  styleUrls: ["dashboard-item.component.scss"],
 })
-export class DashboardListItemComponent implements AfterViewInit {
+export class DashboardItemComponent implements AfterViewInit {
   @ViewChild("container") container: ElementRef;
   @ViewChild("content") content: ElementRef;
 
+  confirmDelete = false;
   isEditingMemo = false;
   memo: string;
 
@@ -60,6 +31,7 @@ export class DashboardListItemComponent implements AfterViewInit {
     private router: Router,
     private el: ElementRef,
     private renderer: Renderer2,
+    public dialog: MatDialog,
     private boardService: BoardService
   ) {}
 
@@ -67,10 +39,32 @@ export class DashboardListItemComponent implements AfterViewInit {
     this.saveSize();
   }
 
-  onClickShare() {}
+  onClickShare() {
+    this.dialog
+      .open(DialogComponent, {
+        width: "500px",
+        data: {
+          function: "Share",
+          title: "Share this board",
+          copyUrl: `http://localhost:4200/join/${this.board.id}`,
+        },
+      })
+      .afterClosed();
+  }
 
   onClickDelete() {
-    this.boardService.deleteBoard(this.board.id);
+    this.dialog
+      .open(DialogComponent, {
+        width: "500px",
+        data: {
+          function: "Delete",
+          title: "Delete this board?",
+        },
+      })
+      .afterClosed()
+      .subscribe((res) => {
+        if (res === "Delete") this.boardService.deleteBoard(this.board.id);
+      });
   }
 
   canUpdateMemo() {

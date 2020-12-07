@@ -33,11 +33,11 @@ button:focus {
   height: 50px;
 }
 
-i {
+.float-right > i {
   margin-right: 5px;
 }
 
-.nav-link i {
+.nav-link > i {
   margin-right: 0px !important;
 }
 
@@ -55,7 +55,7 @@ i {
 }
 
 /*
-  Component: DashboardListItemComponent
+  Component: DashboardItemComponent
 */
 
 .dropdown {
@@ -67,12 +67,12 @@ i {
 button + .dropdown-menu.show {
   display: flex;
   padding-right: 8px;
-}
 
-.dropdown-menu.show > .dropdown-item {
-  margin-left: 8px;
-  text-align: center;
-  border-radius: 4px;
+  & > .dropdown-item {
+    margin-left: 8px;
+    text-align: center;
+    border-radius: 4px;
+  }
 }
 
 /*
@@ -99,7 +99,7 @@ span.rt-span:hover i.delete {
 }
 
 /*
-  Components: DashboardListItemComponent, DialogComponent, ColumnComponent, CardComponent
+  Components: DashboardItemComponent, DialogComponent, ColumnComponent, CardComponent
 */
 
 textarea.rt-text {
@@ -111,16 +111,16 @@ textarea.rt-text {
   resize: none;
   margin: 10px 0 10px 0;
   width: 100%;
-}
 
-textarea.rt-text + span {
-  border: 1px solid rgba(236, 236, 236, 0.3);
-  padding: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  border-radius: 0.5rem;
-  background-color: rgba(223, 222, 222, 0.3);
-  background-clip: border-box;
+  & + span {
+    border: 1px solid rgba(236, 236, 236, 0.3);
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 0.5rem;
+    background-color: rgba(223, 222, 222, 0.3);
+    background-clip: border-box;
+  }
 }
 
 /*
@@ -131,6 +131,6 @@ div.mat-form-field-wrapper {
 }
 
 mat-dialog-container {
-  border-radius: 20px !important;
+  border-radius: 0.4rem !important;
   text-align: center;
 }

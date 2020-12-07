@@ -39,7 +39,11 @@ export class MenubarComponent {
     this.dialog
       .open(DialogComponent, {
         width: "500px",
-        data: { title: "Share" },
+        data: {
+          function: "Share",
+          title: "Share this board",
+          copyUrl: `http://localhost:4200/join/${this.boardId}`,
+        },
       })
       .afterClosed();
   }
