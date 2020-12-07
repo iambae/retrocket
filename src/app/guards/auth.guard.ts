@@ -8,7 +8,7 @@ export class AuthGuard implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate(): true | UrlTree {
-    const isLoggedIn = JSON.parse(localStorage.getItem("user"));
+    const isLoggedIn = JSON.parse(sessionStorage.getItem("user"));
 
     if (isLoggedIn) {
       return true;

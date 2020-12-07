@@ -33,8 +33,8 @@ export class AuthComponent {
     this.form.setValidators(this.checkPasswords());
     this.quote = quotes[Math.floor(Math.random() * quotes.length)];
     this.isAuthor =
-      !!localStorage.getItem("user") &&
-      !JSON.parse(localStorage.getItem("user")).isAnonymous;
+      !!sessionStorage.getItem("user") &&
+      !JSON.parse(sessionStorage.getItem("user")).isAnonymous;
   }
 
   checkPasswords() {

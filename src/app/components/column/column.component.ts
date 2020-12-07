@@ -33,7 +33,7 @@ export class ColumnComponent {
   isAuthor: boolean;
 
   constructor(private el: ElementRef) {
-    this.isAuthor = !JSON.parse(localStorage.getItem("user")).isAnonymous;
+    this.isAuthor = !JSON.parse(sessionStorage.getItem("user")).isAnonymous;
   }
 
   canAddCard() {

@@ -35,7 +35,7 @@ export class JoinComponent implements OnInit, OnDestroy {
     this.boardId = window.location.pathname.split("/join/")[1];
 
     // If user already joined this board, exit join flow
-    let lastUser = JSON.parse(localStorage.getItem("user"));
+    let lastUser = JSON.parse(sessionStorage.getItem("user"));
     if (lastUser) this.router.navigate(["/board", lastUser.lastJoined]);
 
     this.userReady$ = this.usernameSubject.pipe(
@@ -66,14 +66,14 @@ export class JoinComponent implements OnInit, OnDestroy {
           member: newUser.displayName,
         });
         newUser.lastJoined = this.boardId; // save this board to local user
-        localStorage.setItem("user", JSON.stringify(newUser));
+        sessionStorage.setItem("user", JSON.stringify(newUser));
         this.router.navigate(["/board", this.boardId]);
         this.usernameSubject.complete();
       });
   }
 
   async removeCurrentUser() {
-    const currentUser = JSON.parse(localStorage.getItem("user"));
+    const currentUser = JSON.parse(sessionStorage.getItem("user"));
     if (currentUser)
       await this.boardService.updateBoardTeam(currentUser.lastJoined, {
         type: "remove",

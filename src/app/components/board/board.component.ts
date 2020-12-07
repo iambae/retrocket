@@ -30,7 +30,7 @@ export class BoardComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const currentUser = JSON.parse(localStorage.getItem("user"));
+    const currentUser = JSON.parse(sessionStorage.getItem("user"));
     this.boardId = window.location.pathname.split("/board/")[1];
     this.board$ = this.boardService.getBoard(this.boardId).pipe(
       rxMap((board) => {

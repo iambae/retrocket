@@ -11,14 +11,14 @@ export class AppComponent {
   /* Remove user from team of users accessing the board */
   @HostListener("window:beforeunload", ["$event"])
   public beforeunloadHandler() {
-    const currentUser = JSON.parse(localStorage.getItem("user"));
+    const currentUser = JSON.parse(sessionStorage.getItem("user"));
     if (currentUser)
       this.boardService.updateBoardTeam(currentUser.lastJoined, {
         type: "remove",
         member: currentUser.displayName,
       });
 
-    localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
   }
 
   constructor(private boardService: BoardService) {}
