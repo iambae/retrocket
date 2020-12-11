@@ -3,7 +3,6 @@ import { map as rxMap } from "rxjs/operators";
 import { Observable } from "rxjs";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Card } from "../models/index";
-import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
 export class CardService {
@@ -27,12 +26,18 @@ export class CardService {
 
   /** POST: add a new card to board with boardId */
   addCard(card: Card, boardId: string) {
-    card = { id: uuidv4(), boardId, ...card };
+    const cardDoc = this.firestoreService
+      .collection<Card[]>(`boards/${boardId}/cards`)
+      .doc<Card>().ref;
 
-    this.firestoreService
-      .collection(`boards/${boardId}/cards`)
-      .doc(card.id)
-      .set(card)
+    const id = cardDoc.id;
+
+    cardDoc
+      .set({
+        ...card,
+        boardId,
+        id,
+      })
       .then(() =>
         console.log(`Card ${card.id} successfully added to board ${boardId}!`)
       )
