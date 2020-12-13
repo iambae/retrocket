@@ -1,19 +1,20 @@
 import { ColorService } from "src/app/services/color.service";
 import { BoardService } from "src/app/services/board.service";
-import { Observable } from "rxjs";
+import { Observable, Subscription } from "rxjs";
 import { map as rxMap, withLatestFrom } from "rxjs/operators";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Card, Column, Board, Color } from "src/app/models/index";
 import { ColumnService } from "src/app/services/column.service";
 import { CardService } from "src/app/services/card.service";
 import { Router } from "@angular/router";
+import { TeamService } from "src/app/services/team.service";
 
 @Component({
   selector: "app-board",
   templateUrl: "./board.component.html",
   providers: [BoardService],
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, OnDestroy {
   boardId: string;
   board$: Observable<Board>;
   cards: any = {};
@@ -21,11 +22,14 @@ export class BoardComponent implements OnInit {
   color$: Observable<Color>;
   colors$: Observable<Color[]>;
 
+  cardSubscription: Subscription;
+
   constructor(
     private boardService: BoardService,
     private cardService: CardService,
     private colorService: ColorService,
     private columnService: ColumnService,
+    private teamService: TeamService,
     private router: Router
   ) {}
 
@@ -33,9 +37,10 @@ export class BoardComponent implements OnInit {
     const currentUser = JSON.parse(sessionStorage.getItem("user"));
     this.boardId = window.location.pathname.split("/board/")[1];
     this.board$ = this.boardService.getBoard(this.boardId).pipe(
-      rxMap((board) => {
+      withLatestFrom(this.teamService.getTeam(this.boardId)),
+      rxMap(([board, team]) => {
         currentUser.uid === board.author ||
-        board.team.includes(currentUser.displayName)
+        team.members.includes(currentUser.displayName)
           ? this.initBoard(board)
           : this.router.navigate(["/join", board.id]);
         return board;
@@ -52,7 +57,7 @@ export class BoardComponent implements OnInit {
       )
     );
     this.columns$ = this.columnService.getColumns();
-    this.cardService
+    this.cardSubscription = this.cardService
       .getCards(this.boardId)
       .pipe(
         withLatestFrom(this.columns$),
@@ -66,16 +71,12 @@ export class BoardComponent implements OnInit {
       .subscribe();
   }
 
-  updateBoard({ field, value }) {
-    if (field === "team")
-      this.boardService.updateBoardTeam(this.boardId, {
-        type: "remove",
-        member: value,
-      });
-    else this.boardService.updateBoard(this.boardId, { [field]: value });
+  /* TODO: Implement */
+  updateColumn(event: Column) {
+    console.log("BoardComponent: updateColumn: event:", event);
   }
 
-  handleCardEvent(event: { type: string; data: Card }) {
+  onCardEvent(event: { type: string; data: Card }) {
     switch (event.type) {
       case "add":
         this.cardService.addCard(event.data, this.boardId);
@@ -86,5 +87,9 @@ export class BoardComponent implements OnInit {
       case "delete":
         this.cardService.deleteCard(event.data, this.boardId);
     }
+  }
+
+  ngOnDestroy() {
+    if (this.cardSubscription) this.cardSubscription.unsubscribe();
   }
 }

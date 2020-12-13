@@ -28,22 +28,13 @@
           </a>
         </li>
       </ul>
-      <app-menu
+      <app-theme-menu
         [colors]="colors"
         [color]="color"
-        (colorChange)="toggleColor($event)"
+        (colorChange)="updateBoardColor($event)"
       >
-      </app-menu>
-      <div class="avatar-group">
-        <img
-          *ngFor="let member of team"
-          class="avatar"
-          [hidden]="team?.length === 0"
-          alt="{{ member }}"
-          title="{{ member }}"
-          src="https://robohash.org/{{ member }}.png?set=set3"
-        />
-      </div>
+      </app-theme-menu>
+      <app-team [boardId]="boardId"></app-team>
       <div class="board-name">
         <div><i class="fas fa-edit fa-2x"></i></div>
         <input
@@ -52,7 +43,7 @@
           [disabled]="user.isAnonymous"
           [(ngModel)]="boardName"
           [size]="name.value.length > 0 ? name.value.length : 1"
-          (ngModelChange)="editBoardName($event)"
+          (ngModelChange)="updateBoardName($event)"
         />
       </div>
     </div>

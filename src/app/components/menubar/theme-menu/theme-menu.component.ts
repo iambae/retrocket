@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { Color } from "../../../models/index";
 
 @Component({
-  selector: "app-menu",
-  templateUrl: "./menu.component.html",
+  selector: "app-theme-menu",
+  templateUrl: "./theme-menu.component.html",
 })
-export class MenuComponent {
+export class ThemeMenuComponent {
   @Input() colors: Color[];
   @Output() colorChange: EventEmitter<Color> = new EventEmitter<Color>();
   @Input("color") selectedColor: Color;

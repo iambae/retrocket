@@ -1,5 +1,5 @@
 import { Component, HostListener } from "@angular/core";
-import { BoardService } from "./services/board.service";
+import { TeamService } from "./services/team.service";
 
 @Component({
   selector: "app-root",
@@ -13,7 +13,7 @@ export class AppComponent {
   public beforeunloadHandler() {
     const currentUser = JSON.parse(sessionStorage.getItem("user"));
     if (currentUser)
-      this.boardService.updateBoardTeam(currentUser.lastJoined, {
+      this.teamService.updateTeam(currentUser.lastJoined, {
         type: "remove",
         member: currentUser.displayName,
       });
@@ -21,5 +21,5 @@ export class AppComponent {
     sessionStorage.removeItem("user");
   }
 
-  constructor(private boardService: BoardService) {}
+  constructor(private teamService: TeamService) {}
 }

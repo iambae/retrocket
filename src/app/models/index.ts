@@ -32,3 +32,8 @@ export interface Color {
   text: "white" | "black";
   order: number;
 }
+
+export interface Team {
+  boardId: string;
+  members: string[];
+}

@@ -1,9 +1,8 @@
 import { Injectable } from "@angular/core";
-import { map as rxMap, switchMap } from "rxjs/operators";
+import { map as rxMap } from "rxjs/operators";
 import { Observable } from "rxjs";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { Board } from "../models/index";
-import { AngularFireAuth } from "@angular/fire/auth";
 import firebase from "firebase/app";
 
 @Injectable({
@@ -12,28 +11,21 @@ import firebase from "firebase/app";
 export class BoardService {
   boards$: Observable<Board[]>;
 
-  constructor(
-    private firestoreService: AngularFirestore,
-    private afAuth: AngularFireAuth
-  ) {
-    this.boards$ = this.afAuth.user.pipe(
-      switchMap((user) =>
-        this.firestoreService
-          .collection("boards")
-          .snapshotChanges()
-          .pipe(
-            rxMap((changes) =>
-              changes
-                .map((change) => {
-                  const data = change.payload.doc.data() as Board;
-                  data.id = change.payload.doc.id;
-                  return data;
-                })
-                .sort((a, b) => a.created - b.created)
-            )
-          )
-      )
-    );
+  constructor(private firestoreService: AngularFirestore) {
+    this.boards$ = this.firestoreService
+      .collection("boards")
+      .snapshotChanges()
+      .pipe(
+        rxMap((changes) =>
+          changes
+            .map((change) => {
+              const data = change.payload.doc.data() as Board;
+              data.id = change.payload.doc.id;
+              return data;
+            })
+            .sort((a, b) => a.created - b.created)
+        )
+      );
   }
 
   getBoard(boardId: string): Observable<Board> {
@@ -50,7 +42,7 @@ export class BoardService {
     );
   }
 
-  addBoard(board) {
+  addBoard(board): string {
     const boardDoc = this.firestoreService
       .collection<Board[]>("boards")
       .doc<Board>().ref;
@@ -65,6 +57,8 @@ export class BoardService {
       })
       .then(() => console.log(`New board <${board.name}> created!`))
       .catch((error) => console.error("Error creating new board: ", error));
+
+    return id;
   }
 
   updateBoard(boardId: string, data: any) {
@@ -84,31 +78,5 @@ export class BoardService {
       .delete()
       .then(() => console.log("Document successfully deleted!"))
       .catch((error) => console.error("Error removing document: ", error));
-  }
-
-  getBoardTeam(boardId: string): Observable<string[]> {
-    return this.boards$.pipe(
-      rxMap((boards) => boards.find((board) => board.id === boardId).team)
-    );
-  }
-
-  async updateBoardTeam(boardId: string, { type, member }) {
-    await this.firestoreService
-      .doc(`boards/${boardId}`)
-      .update(
-        type === "add"
-          ? {
-              team: firebase.firestore.FieldValue.arrayUnion(member),
-            }
-          : type === "remove"
-          ? {
-              team: firebase.firestore.FieldValue.arrayRemove(member),
-            }
-          : {
-              team: [],
-            }
-      )
-      .then(() => console.log(`Team of board ${boardId} updated!`))
-      .catch((error) => console.error("Error updating board team: ", error));
   }
 }

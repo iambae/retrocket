@@ -8,7 +8,7 @@ import {
   map as rxMap,
   filter,
 } from "rxjs/operators";
-import { BoardService } from "src/app/services/board.service";
+import { TeamService } from "src/app/services/team.service";
 import { Router } from "@angular/router";
 
 @Component({
@@ -20,14 +20,14 @@ export class JoinComponent implements OnInit, OnDestroy {
   boardId: string;
   username: string = "";
   usernameTaken: boolean = false;
-  isLoading: boolean = false;
+  avatarReady: boolean = false;
   avatarUrl: string = "";
   userReady$: Observable<boolean>;
   usernameSubject = new BehaviorSubject(this.username);
 
   constructor(
     private authService: AuthService,
-    private boardService: BoardService,
+    private teamService: TeamService,
     private router: Router
   ) {}
 
@@ -42,10 +42,10 @@ export class JoinComponent implements OnInit, OnDestroy {
       filter((username) => username.length > 0),
       debounceTime(700),
       distinctUntilChanged(),
-      withLatestFrom(this.boardService.getBoardTeam(this.boardId)),
+      withLatestFrom(this.teamService.getTeam(this.boardId)),
       rxMap(([username, team]) => {
         this.avatarUrl = `https://robohash.org/${username}.png?set=set3`;
-        this.usernameTaken = team.includes(username);
+        this.usernameTaken = team.members.includes(username);
         return !this.usernameTaken;
       })
     );
@@ -55,16 +55,17 @@ export class JoinComponent implements OnInit, OnDestroy {
     this.usernameSubject.next(name);
   }
 
-  async joinBoard() {
-    await this.removeCurrentUser();
+  joinBoard() {
+    this.removeCurrentUser();
 
     this.authService
       .signInAnonymously(this.username, this.avatarUrl)
-      .then(async (newUser) => {
-        await this.boardService.updateBoardTeam(this.boardId, {
+      .then((newUser) => {
+        this.teamService.updateTeam(this.boardId, {
           type: "add",
           member: newUser.displayName,
         });
+
         newUser.lastJoined = this.boardId; // save this board to local user
         sessionStorage.setItem("user", JSON.stringify(newUser));
         this.router.navigate(["/board", this.boardId]);
@@ -72,10 +73,11 @@ export class JoinComponent implements OnInit, OnDestroy {
       });
   }
 
-  async removeCurrentUser() {
+  removeCurrentUser() {
     const currentUser = JSON.parse(sessionStorage.getItem("user"));
+
     if (currentUser)
-      await this.boardService.updateBoardTeam(currentUser.lastJoined, {
+      this.teamService.updateTeam(currentUser.lastJoined, {
         type: "remove",
         member: currentUser.displayName,
       });

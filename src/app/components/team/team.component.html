@@ -1,0 +1,10 @@
+<div class="avatar-group">
+  <img
+    *ngFor="let member of members$ | async"
+    class="avatar"
+    [hidden]="team?.length === 0"
+    alt="{{ member }}"
+    title="{{ member }}"
+    src="https://robohash.org/{{ member }}.png?set=set3"
+  />
+</div>

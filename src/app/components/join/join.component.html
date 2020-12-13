@@ -37,18 +37,18 @@
           </p>
           <img
             class="loading"
-            *ngIf="username.length > 0 && isLoading && !usernameTaken"
+            *ngIf="username.length > 0 && !avatarReady && !usernameTaken"
             src="../../../assets/img/brand/retrocket.gif"
             alt="Loading..."
           />
           <img
-            [hidden]="isLoading || usernameTaken"
-            (load)="isLoading = false"
+            [hidden]="!avatarReady || usernameTaken"
+            (load)="avatarReady = true"
             src="{{ avatarUrl }}"
           />
           <div class="text-center">
             <button
-              [disabled]="!(userReady$ | async) || isLoading"
+              [disabled]="!(userReady$ | async) || !avatarReady"
               (click)="joinBoard()"
               type="submit"
               class="btn btn-warning my-4"

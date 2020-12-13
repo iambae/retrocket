@@ -7,7 +7,7 @@ import { MatInputModule } from "@angular/material/input";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { MenubarComponent } from "./menubar/menubar.component";
-import { MenuComponent } from "./menubar/menu/menu.component";
+import { ThemeMenuComponent } from "./menubar/theme-menu/theme-menu.component";
 import { CardComponent } from "./card/card.component";
 import { ColumnHeaderComponent } from "./column-header/column-header.component";
 import { ColumnComponent } from "./column/column.component";
@@ -18,6 +18,7 @@ import { AddClassDirective } from "../shared/add-class.directive";
 import { JoinComponent } from "./join/join.component";
 import { AuthComponent } from "./auth/auth.component";
 import { DialogComponent } from "./dialog/dialog.component";
+import { TeamComponent } from './team/team.component';
 
 @NgModule({
   imports: [
@@ -36,13 +37,14 @@ import { DialogComponent } from "./dialog/dialog.component";
     BoardComponent,
     DialogComponent,
     MenubarComponent,
-    MenuComponent,
+    ThemeMenuComponent,
     ColumnComponent,
     ColumnHeaderComponent,
     CardComponent,
     AddClassDirective,
     JoinComponent,
     AuthComponent,
+    TeamComponent,
   ],
   exports: [
     DashboardComponent,
@@ -50,7 +52,7 @@ import { DialogComponent } from "./dialog/dialog.component";
     BoardComponent,
     DialogComponent,
     MenubarComponent,
-    MenuComponent,
+    ThemeMenuComponent,
     ColumnComponent,
     ColumnHeaderComponent,
     CardComponent,
