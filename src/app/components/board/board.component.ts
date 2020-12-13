@@ -49,13 +49,8 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   initBoard(board: Board) {
-    this.colors$ = this.colorService.getColors();
-    this.color$ = this.colorService.getColor(board.color).pipe(
-      withLatestFrom(this.colors$),
-      rxMap(([selectedColor, colors]) =>
-        colors.find((color) => selectedColor.id === color.id)
-      )
-    );
+    this.colors$ = this.colorService.colors;
+    this.color$ = this.colorService.getColor(board.color);
     this.columns$ = this.columnService.getColumns();
     this.cardSubscription = this.cardService
       .getCards(this.boardId)

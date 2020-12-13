@@ -9,7 +9,6 @@ export interface Board {
 }
 
 export interface Column {
-  id: string;
   title: string;
   order: number;
   icon: string;
@@ -25,7 +24,6 @@ export interface Card {
 }
 
 export interface Color {
-  id: string;
   value: string;
   name: string;
   label: string;

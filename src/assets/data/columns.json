@@ -1,0 +1,32 @@
+[ 
+	{
+		"color": "bg-primary",
+		"icon": "fas fa-chart-line",
+		"order": 0,
+		"title": "What went well?"
+	},
+	{
+		"color": "bg-warning",
+		"icon": "fas fa-lightbulb",
+		"order": 1,
+		"title": "What can improve?"
+	},
+	{
+		"color": "bg-danger",
+		"icon": "fas fa-exclamation",
+		"order": 2,
+		"title": "What's next?"
+	},
+	{
+		"color": "bg-info",
+		"icon": "fas fa-crown",
+		"order": 3,
+		"title": "Hall of Fame"
+	}
+]
+
+
+
+
+
+
