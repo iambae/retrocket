@@ -1,0 +1,72 @@
+[
+  {
+    "value": "#5603ad",
+    "name": "bg-gradient-indigo",
+    "label": "Indigo",
+    "text": "white",
+    "order": 0
+  },
+  {
+    "value": "#8965e0",
+    "name": "bg-gradient-purple",
+    "label": "Purple",
+    "text": "white",
+    "order": 1
+  },
+  {
+    "value": "#5e72e4",
+    "name": "bg-gradient-blue",
+    "label": "Blue",
+    "text": "white",
+    "order": 2
+  },
+  {
+    "value": "#f3a4b5",
+    "name": "bg-gradient-pink",
+    "label": "Pink",
+    "text": "black",
+    "order": 3
+  },
+  {
+    "value": "#f5365c",
+    "name": "bg-gradient-red",
+    "label": "Red",
+    "text": "white",
+    "order": 4
+  },
+  {
+    "value": "#fb6340",
+    "name": "bg-gradient-orange",
+    "label": "Orange",
+    "text": "white",
+    "order": 5
+  },
+  {
+    "value": "#ffd600",
+    "name": "bg-gradient-yellow",
+    "label": "Yellow",
+    "text": "black",
+    "order": 6
+  },
+  {
+    "value": "#2dce89",
+    "name": "bg-gradient-green",
+    "label": "Green",
+    "text": "white",
+    "order": 7
+  },
+  {
+    "value": "#2bffc6",
+    "name": "bg-gradient-cyan",
+    "label": "Cyan",
+    "text": "black",
+    "order": 8
+  },
+  {
+    "value": "#11cdef",
+    "name": "bg-gradient-teal",
+    "label": "Teal",
+    "text": "white",
+    "order": 9
+  }
+]
