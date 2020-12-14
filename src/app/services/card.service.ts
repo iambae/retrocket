@@ -28,7 +28,7 @@ export class CardService {
   addCard(card: Card, boardId: string) {
     const cardDoc = this.firestoreService
       .collection<Card[]>(`boards/${boardId}/cards`)
-      .doc<Card>().ref;
+      .ref.doc();
 
     const id = cardDoc.id;
 

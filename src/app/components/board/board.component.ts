@@ -1,13 +1,11 @@
 import { ColorService } from "src/app/services/color.service";
 import { BoardService } from "src/app/services/board.service";
 import { Observable, Subscription } from "rxjs";
-import { map as rxMap, withLatestFrom } from "rxjs/operators";
+import { map as rxMap } from "rxjs/operators";
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Card, Column, Board, Color } from "src/app/models/index";
 import { ColumnService } from "src/app/services/column.service";
 import { CardService } from "src/app/services/card.service";
-import { Router } from "@angular/router";
-import { TeamService } from "src/app/services/team.service";
 
 @Component({
   selector: "app-board",
@@ -27,22 +25,14 @@ export class BoardComponent implements OnInit, OnDestroy {
     private boardService: BoardService,
     private cardService: CardService,
     private colorService: ColorService,
-    private columnService: ColumnService,
-    private teamService: TeamService,
-    private router: Router
+    private columnService: ColumnService
   ) {}
 
   ngOnInit() {
-    console.log("ngOnInit()");
-    const currentUser = JSON.parse(sessionStorage.getItem("user"));
     this.boardId = window.location.pathname.split("/board/")[1];
     this.board$ = this.boardService.getBoard(this.boardId).pipe(
-      withLatestFrom(this.teamService.getTeam(this.boardId)),
-      rxMap(([board, team]) => {
-        currentUser.uid === board.author ||
-        team.members.includes(currentUser.displayName)
-          ? this.initBoard(board)
-          : this.router.navigate(["/join", board.id]);
+      rxMap((board) => {
+        this.initBoard(board);
         return board;
       })
     );
@@ -59,7 +49,6 @@ export class BoardComponent implements OnInit, OnDestroy {
       .getCards(this.boardId)
       .pipe(
         rxMap((cards) => {
-          console.log("initBoard()");
           for (const column of this.columns)
             this.cards[column.order] = cards
               .filter((card: Card) => card.colId === column.order)
@@ -70,7 +59,6 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   updateColumn(column: Column) {
-    console.log("BoardComponent: updateColumn: column:", column);
     this.boardService.updateBoard(this.boardId, {
       columns: { [column.order]: column.name },
     });

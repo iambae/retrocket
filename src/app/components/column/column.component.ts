@@ -68,7 +68,11 @@ export class ColumnComponent {
   }
 
   updateColumn() {
-    if (this.column.name && this.column.name.trim() !== "") {
+    if (
+      this.column.name &&
+      this.column.name.trim() !== "" &&
+      this.colName !== this.column.name
+    ) {
       this.update.emit(this.column);
       this.isEditingCol = false;
     } else {

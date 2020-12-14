@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { TeamService } from "src/app/services/team.service";
 import { Observable } from "rxjs";
 import { map as rxMap } from "rxjs/operators";
@@ -8,10 +8,12 @@ import { map as rxMap } from "rxjs/operators";
   templateUrl: "./team.component.html",
 })
 export class TeamComponent implements OnInit {
-  @Input() boardId: string;
+  boardId: string;
   members$: Observable<string[]>;
 
-  constructor(private teamService: TeamService) {}
+  constructor(private teamService: TeamService) {
+    this.boardId = window.location.pathname.split("/board/")[1];
+  }
 
   ngOnInit() {
     this.members$ = this.teamService

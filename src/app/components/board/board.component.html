@@ -3,6 +3,8 @@
   [colors]="colors$ | async"
   [boardId]="boardId"
   [boardName]="(board$ | async)?.name"
+>
+  <app-team></app-team
 ></app-menubar>
 <div>
   <div class="header pb-8 pt-5" [ngClass]="(color$ | async)?.name">
