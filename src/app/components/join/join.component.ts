@@ -55,22 +55,25 @@ export class JoinComponent implements OnInit, OnDestroy {
     this.usernameSubject.next(name);
   }
 
-  joinBoard() {
+  async joinBoard() {
     this.removeCurrentUser();
 
-    this.authService
-      .signInAnonymously(this.username, this.avatarUrl)
-      .then((newUser) => {
-        this.teamService.updateTeam(this.boardId, {
-          type: "add",
-          member: newUser.displayName,
-        });
+    const user = await this.authService.signInAnonymously(
+      this.username,
+      this.avatarUrl
+    );
 
-        newUser.lastJoined = this.boardId; // save this board to local user
-        sessionStorage.setItem("user", JSON.stringify(newUser));
-        this.router.navigate(["/board", this.boardId]);
-        this.usernameSubject.complete();
-      });
+    const res = await this.teamService.updateTeam(this.boardId, {
+      type: "add",
+      member: user.displayName,
+    });
+
+    if (res) {
+      user.lastJoined = this.boardId; // capture board to local user obj
+      sessionStorage.setItem("user", JSON.stringify(user));
+      this.router.navigate(["/board", this.boardId]);
+      this.usernameSubject.complete();
+    }
   }
 
   removeCurrentUser() {

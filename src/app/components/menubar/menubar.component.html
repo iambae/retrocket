@@ -34,7 +34,7 @@
         (colorChange)="updateBoardColor($event)"
       >
       </app-theme-menu>
-      <app-team [boardId]="boardId"></app-team>
+      <ng-content></ng-content>
       <div class="board-name">
         <div><i class="fas fa-edit fa-2x"></i></div>
         <input

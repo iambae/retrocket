@@ -30,10 +30,9 @@ export class TeamService {
     );
   }
 
-  updateTeam(boardId: string, { type, member }) {
-    this.firestoreService
-      .doc(`teams/${boardId}`)
-      .update(
+  async updateTeam(boardId: string, { type, member }) {
+    try {
+      await this.firestoreService.doc(`teams/${boardId}`).update(
         type === "add"
           ? {
               members: firebase.firestore.FieldValue.arrayUnion(member),
@@ -45,9 +44,13 @@ export class TeamService {
           : {
               members: [],
             }
-      )
-      .then(() => console.log(`Team of board ${boardId} updated!`))
-      .catch((error) => console.error("Error updating board team: ", error));
+      );
+      console.log(`Team updated!`);
+      return true;
+    } catch (error) {
+      console.error("Error updating board team: ", error);
+      return false;
+    }
   }
 
   /* Team ID is made the same as the ID of its corresponding Board to facilitate query  */
