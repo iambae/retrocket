@@ -104,4 +104,5 @@ const quotes = [
     text: "Talent wins games, but teamwork and intelligence win championships.",
   },
 ];
+
 export { quotes };

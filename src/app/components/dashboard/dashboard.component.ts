@@ -8,6 +8,7 @@ import { Board } from "src/app/models";
 import { Router } from "@angular/router";
 import { DialogComponent } from "../dialog/dialog.component";
 import { TeamService } from "src/app/services/team.service";
+import { ColumnService } from "src/app/services/column.service";
 
 @Component({
   selector: "app-dashboard",
@@ -23,6 +24,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private boardService: BoardService,
     private authService: AuthService,
     private teamService: TeamService,
+    private columnService: ColumnService,
     private router: Router,
     public dialog: MatDialog
   ) {}
@@ -58,9 +60,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   addBoard({ name, memo }) {
     const board = {
       author: this.userId,
+      color: "#fb6340", // default: Orange
+      columns: this.columnService.getDefaultNames(),
       name,
       memo,
-      color: "#fb6340", // default color: Orange
     };
     const boardId = this.boardService.addBoard(board);
     this.teamService.createTeam(boardId);

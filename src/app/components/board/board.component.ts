@@ -17,11 +17,10 @@ import { TeamService } from "src/app/services/team.service";
 export class BoardComponent implements OnInit, OnDestroy {
   boardId: string;
   board$: Observable<Board>;
-  cards: any = {};
-  columns$: Observable<Column[]>;
   color$: Observable<Color>;
   colors$: Observable<Color[]>;
-
+  columns: Column[];
+  cards: any = {};
   cardSubscription: Subscription;
 
   constructor(
@@ -34,6 +33,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    console.log("ngOnInit()");
     const currentUser = JSON.parse(sessionStorage.getItem("user"));
     this.boardId = window.location.pathname.split("/board/")[1];
     this.board$ = this.boardService.getBoard(this.boardId).pipe(
@@ -49,26 +49,31 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   initBoard(board: Board) {
+    this.columns = this.columnService.getColumns().map((column, order) => ({
+      ...column,
+      name: board.columns[order], // update column name to custom set for board
+    }));
     this.colors$ = this.colorService.colors;
     this.color$ = this.colorService.getColor(board.color);
-    this.columns$ = this.columnService.getColumns();
     this.cardSubscription = this.cardService
       .getCards(this.boardId)
       .pipe(
-        withLatestFrom(this.columns$),
-        rxMap(([cards, columns]) => {
-          for (const column of columns)
+        rxMap((cards) => {
+          console.log("initBoard()");
+          for (const column of this.columns)
             this.cards[column.order] = cards
-              .filter((card: Card) => card.colId === column.id)
+              .filter((card: Card) => card.colId === column.order)
               .sort((a, b) => a.order - b.order);
         })
       )
       .subscribe();
   }
 
-  /* TODO: Implement */
-  updateColumn(event: Column) {
-    console.log("BoardComponent: updateColumn: event:", event);
+  updateColumn(column: Column) {
+    console.log("BoardComponent: updateColumn: column:", column);
+    this.boardService.updateBoard(this.boardId, {
+      columns: { [column.order]: column.name },
+    });
   }
 
   onCardEvent(event: { type: string; data: Card }) {

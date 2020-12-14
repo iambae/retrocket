@@ -12,7 +12,7 @@ import { Column, Card } from "../../models/index";
  * ColumnComponent:
  * - should not reference Card type
  * - is a static, "dumb" component
- * - can only have its title updated
+ * - can only have its name updated
  * - passes data from CardComponent to DashboardComponent
  */
 @Component({
@@ -27,7 +27,7 @@ export class ColumnComponent {
   @ViewChild("cardInputRef") cardInputRef: ElementRef;
 
   isEditingCol = false;
-  colTitle: string;
+  colName: string;
   isAddingCard = false;
   cardText: string;
   isAuthor: boolean;
@@ -41,7 +41,7 @@ export class ColumnComponent {
   }
 
   editColumn() {
-    this.colTitle = this.column.title;
+    this.colName = this.column.name;
     this.isEditingCol = true;
     const input = this.el.nativeElement
       .getElementsByClassName("column-header")[0]
@@ -68,7 +68,7 @@ export class ColumnComponent {
   }
 
   updateColumn() {
-    if (this.column.title && this.column.title.trim() !== "") {
+    if (this.column.name && this.column.name.trim() !== "") {
       this.update.emit(this.column);
       this.isEditingCol = false;
     } else {
@@ -77,7 +77,7 @@ export class ColumnComponent {
   }
 
   cancelColumnUpdate() {
-    this.column.title = this.colTitle;
+    this.column.name = this.colName;
     this.isEditingCol = false;
   }
 
@@ -129,7 +129,7 @@ export class ColumnComponent {
       data: {
         text: this.cardText,
         order: this.cards.length,
-        colId: this.column.id,
+        colId: this.column.order,
       },
     });
   }
