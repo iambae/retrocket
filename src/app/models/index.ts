@@ -5,11 +5,16 @@ export interface Board {
   memo?: string;
   color?: string;
   created: any;
-  team: string[];
+  columns: {
+    0: string;
+    1: string;
+    2: string;
+    3: string;
+  };
 }
 
 export interface Column {
-  title: string;
+  name: string;
   order: number;
   icon: string;
   color: string;
@@ -17,7 +22,7 @@ export interface Column {
 
 export interface Card {
   id: string;
-  colId: string;
+  colId: number;
   boardId: string;
   text: string;
   order: number;

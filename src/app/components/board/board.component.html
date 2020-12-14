@@ -9,10 +9,7 @@
     <div class="container-fluid">
       <div class="header-body">
         <div class="row">
-          <div
-            class="col-xl-3 col-lg-6"
-            *ngFor="let column of columns$ | async"
-          >
+          <div class="col-xl-3 col-lg-6" *ngFor="let column of columns">
             <app-column-header
               [column]="column"
               [count]="cards[column.order]?.length"
@@ -24,7 +21,7 @@
   </div>
   <div class="container-fluid mt--8 mb-5 px-5">
     <div class="row mt-5">
-      <div class="col-xl-3 col-lg-6" *ngFor="let column of columns$ | async">
+      <div class="col-xl-3 col-lg-6" *ngFor="let column of columns">
         <app-column
           [column]="column"
           [cards]="cards[column.order]"

@@ -42,7 +42,7 @@ export class BoardService {
     );
   }
 
-  addBoard(board): string {
+  addBoard(board: any): string {
     const boardDoc = this.firestoreService
       .collection<Board[]>("boards")
       .doc<Board>().ref;

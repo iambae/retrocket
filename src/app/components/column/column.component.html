@@ -9,7 +9,7 @@
         <h4
           class="card-title text-uppercase mb-0"
           [ngStyle]="{ color: '#6d7994' }"
-          [innerHtml]="column.title"
+          [innerHtml]="column.name"
           [style.display]="isEditingCol ? 'none' : ''"
           (click)="isAuthor ? editColumn() : ''"
         ></h4>
@@ -17,7 +17,7 @@
           [style.display]="isAuthor && isEditingCol ? '' : 'none'"
           (blur)="updateColumnOnBlur()"
           (keyup)="updateColumnOnEnter($event)"
-          [(ngModel)]="column.title"
+          [(ngModel)]="column.name"
         />
       </div>
       <div class="card-list" [attr.column-id]="column.id">
