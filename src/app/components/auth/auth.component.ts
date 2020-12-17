@@ -15,8 +15,11 @@ import { quotes } from "../../../assets/data/quotes";
   styleUrls: ["./auth.component.scss"],
 })
 export class AuthComponent {
-  form: FormGroup;
+	// Shared by all three auth flows
+  form: FormGroup; 
+   // 0: signin, 1: signup, 2: reset
   formId: number = 0;
+   // Used in view to display signout flow instead to authors
   isAuthor: boolean;
   quote: { author: string; text: string };
 
@@ -31,12 +34,15 @@ export class AuthComponent {
       repeatPassword: new FormControl("", Validators.required),
     });
     this.form.setValidators(this.checkPasswords());
-    this.quote = quotes[Math.floor(Math.random() * quotes.length)];
+	this.quote = quotes[Math.floor(Math.random() * quotes.length)];
+	
+	// Anonymous users cannot author any boards
     this.isAuthor =
       !!sessionStorage.getItem("user") &&
       !JSON.parse(sessionStorage.getItem("user")).isAnonymous;
   }
 
+  /* Form validator: check equality of password and repeat password. */
   checkPasswords() {
     return (group: FormGroup): ValidationErrors => {
       const password = group.controls["password"];
@@ -51,19 +57,23 @@ export class AuthComponent {
     };
   }
 
+  /**  
+   * Uniquely handles validation requirements of each auth flow.
+   * @return {boolean} if current auth flow passes all validation checks.
+   */
   get isReady(): boolean {
     switch (this.formId) {
-      case 0:
+      case 0: // signin form
         return (
           this.email.status === "VALID" && this.password.status === "VALID"
         );
-      case 1:
+      case 1: // signup form
         return (
           this.email.status === "VALID" &&
           this.password.status === "VALID" &&
           this.repeatPassword.status === "VALID"
         );
-      case 2:
+      case 2: // password reset form
         return this.email.status === "VALID";
       default:
         return true;
@@ -82,21 +92,25 @@ export class AuthComponent {
     return this.form.get("repeatPassword");
   }
 
+    /**  
+   * Navigates user to Dashboard after successful signin or signup.
+   * Stays on page when password reset form is submitted.
+   */
   onFormSubmit() {
     const { email, password } = this.form.value;
 
     switch (this.formId) {
-      case 0: // sign in form
+      case 0:
         this.authService
           .login(email, password)
           .then(() => this.router.navigate(["/dashboard"]));
         break;
-      case 1: // sign up form
+      case 1: 
         this.authService
           .signup(email, password)
           .then(() => this.router.navigate(["/dashboard"]));
         break;
-      case 2: // password reset form
+      case 2:
         this.authService.resetPassword(email);
         break;
     }
