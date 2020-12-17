@@ -19,21 +19,29 @@ interface CardEvent {
   templateUrl: "./card.component.html",
 })
 export class CardComponent {
-  // Data flow: CardComponent -> ColumnComponent -> DashboardComponent
+  // Data flow: CardComponent -> ColumnComponent -> BoardComponent
   @Output() cardEvent = new EventEmitter<CardEvent>();
   @Input() card: Card;
-  @ViewChild("content") content: ElementRef;
-  @ViewChild("container") container: ElementRef;
+  @ViewChild("content") content: ElementRef; // most recent static card text
+  @ViewChild("container") container: ElementRef; // textarea with editable content
 
   text: string;
   isEditing = false;
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
-  canUpdate() {
+/** 
+ * Checks whether db write transaction should be made 
+ * @returns {boolean}  true iif new card content is non-empty 
+ * 					   and different from the previous 
+ */
+  canUpdate(): boolean {
     return this.text && this.text.trim() !== "" && this.text !== this.card.text;
   }
 
+ /**
+  * Sets size of textarea#container to size of span#content before displaying
+  */
   saveSize() {
     if (this.content && this.container) {
       const height = `${this.content.nativeElement.offsetHeight}px`;
@@ -41,6 +49,9 @@ export class CardComponent {
     }
   }
 
+ /**
+  * Initiates edit mode for this card 
+  */
   onEdit() {
     this.isEditing = true;
     this.text = this.card.text;

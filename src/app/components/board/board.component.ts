@@ -41,7 +41,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   initBoard(board: Board) {
     this.columns = this.columnService.getColumns().map((column, order) => ({
       ...column,
-      name: board.columns[order], // update column name to custom set for board
+      name: board.columns[order], // Update column name from default to board's
     }));
     this.colors$ = this.colorService.colors;
     this.color$ = this.colorService.getColor(board.color);
@@ -49,6 +49,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       .getCards(this.boardId)
       .pipe(
         rxMap((cards) => {
+			// Organize cards into their respective columns
           for (const column of this.columns)
             this.cards[column.order] = cards
               .filter((card: Card) => card.colId === column.order)
@@ -58,12 +59,21 @@ export class BoardComponent implements OnInit, OnDestroy {
       .subscribe();
   }
 
+  /**
+   * Handles EventEmitter `update` output from ColumnComponent
+   * @param column column to update with new name
+   */
   updateColumn(column: Column) {
     this.boardService.updateBoard(this.boardId, {
       columns: { [column.order]: column.name },
     });
   }
 
+/**
+ * Handles EventEmitter `cardEvent` output from ColumnComponent
+ * @param event object with card data and type of operation: 
+ * 				add, remove, delete
+ */
   onCardEvent(event: { type: string; data: Card }) {
     switch (event.type) {
       case "add":

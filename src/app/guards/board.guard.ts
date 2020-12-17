@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { CanActivate, Router, ActivatedRouteSnapshot } from "@angular/router";
 import { BoardService } from "../services/board.service";
-import { catchError, map as rxMap } from "rxjs/operators";
-import { of, Observable } from "rxjs";
+import { map as rxMap } from "rxjs/operators";
+import { Observable } from "rxjs";
 
 @Injectable({
   providedIn: "root",
@@ -14,12 +14,8 @@ export class BoardGuard implements CanActivate {
     const boardId = route.params.id;
     return this.boardService.getBoard(boardId).pipe(
       rxMap((board) => {
-        if (board !== null) return true;
-      }),
-      catchError(() => {
-        this.router.navigate(["/not-found"]);
-        return of(false);
-      })
-    );
+		if (board) return true;
+        else this.router.navigate(["/not-found"]);
+      }));
   }
 }
