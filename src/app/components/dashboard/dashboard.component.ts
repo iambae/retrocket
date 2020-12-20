@@ -53,6 +53,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       })
       .afterClosed()
       .subscribe((result) => {
+		  // Result: { name: string, memo: string }
         if (result) this.addBoard(result);
       });
   }
@@ -65,7 +66,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       name,
       memo,
     };
-    const boardId = this.boardService.addBoard(board);
+	const boardId = this.boardService.addBoard(board);
+	
+	// POST a Team document for the new board
     this.teamService.createTeam(boardId);
   }
 
