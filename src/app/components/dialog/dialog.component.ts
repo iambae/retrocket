@@ -26,31 +26,41 @@ export class DialogComponent {
   ) {
     this.dialogData = data;
 
+	// For function === "Create"
     this.form = this.fb.group({
       name: [data.name, Validators.required],
       memo: [data.memo],
     });
   }
 
+   /**
+	 * Function: "Create"
+	 */
   save() {
     this.dialogRef.close(this.form.value);
   }
 
-  copy() {
-    // Get input field with url to copy
-    let copyText = document.getElementById("copy-before") as HTMLInputElement;
-    copyText.select();
-    copyText.setSelectionRange(0, 99999);
-
-    // Drag and copy url
-    document.execCommand("copy");
-    let tooltip = document.getElementById("copy-after");
-    tooltip.innerHTML = "Copied!";
-  }
-
+   /**
+	 * Function: "Delete"
+	 */
   confirm(res: string) {
     this.dialogRef.close(res);
   }
+
+    /**
+	 * Function: "Share"
+	 */
+	copy() {
+		// Get input field with url to copy
+		let copyText = document.getElementById("copy-before") as HTMLInputElement;
+		copyText.select();
+		copyText.setSelectionRange(0, 99999);
+	
+		// Drag and copy url
+		document.execCommand("copy");
+		let tooltip = document.getElementById("copy-after");
+		tooltip.innerHTML = "Copied!";
+	  }
 
   onMouseOut() {
     let tooltip = document.getElementById("copy-after");
