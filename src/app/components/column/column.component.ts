@@ -9,11 +9,10 @@ import {
 import { Column, Card } from "../../models/index";
 
 /**
- * ColumnComponent:
- * - should not reference Card type
- * - is a static, "dumb" component
- * - can only have its name updated
- * - passes data from CardComponent to DashboardComponent
+ * ColumnComponent 
+ * - can only update its name or add new card 
+ * - passes delete and update events from CardComponent to BoardComponent
+ * - all events are emitted to BoardComponent to handle db transactions
  */
 @Component({
   selector: "app-column",
@@ -33,6 +32,7 @@ export class ColumnComponent {
   isAuthor: boolean;
 
   constructor(private el: ElementRef) {
+	  // Only board authors can edit column names
     this.isAuthor = !JSON.parse(sessionStorage.getItem("user")).isAnonymous;
   }
 
@@ -121,12 +121,16 @@ export class ColumnComponent {
     this.resetCardInput();
   }
 
-  // Emit card update and delete events
+  /**
+   * Emit to BoardComponent card update and delete events 
+   * emitted by CardComponent; card add events are initiated
+   * by ColumnComponent in onCardAddEvent()
+   * @param data {type: 'update' | 'delete', data: Card}
+   */
   onCardEvent(data) {
     this.cardEvent.emit(data);
   }
 
-  // Emit card add event
   onCardAddEvent() {
     this.cardEvent.emit({
       type: "add",
