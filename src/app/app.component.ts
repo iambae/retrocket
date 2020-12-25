@@ -8,12 +8,12 @@ import { TeamService } from "./services/team.service";
 export class AppComponent {
   title = "retrocket";
 
-  /* Remove user from team of users accessing the board */
+  /* Remove user from team in db and from local storage */
   @HostListener("window:beforeunload", ["$event"])
   public beforeunloadHandler() {
     const currentUser = JSON.parse(sessionStorage.getItem("user"));
     if (currentUser)
-      this.teamService.updateTeam(currentUser.lastJoined, {
+      this.teamService.updateTeam(currentUser.team, {
         type: "remove",
         member: currentUser.displayName,
       });

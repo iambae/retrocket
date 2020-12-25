@@ -36,7 +36,7 @@ export class JoinComponent implements OnInit, OnDestroy {
 
     // If user already joined this board, exit join flow
     let lastUser = JSON.parse(sessionStorage.getItem("user"));
-    if (lastUser) this.router.navigate(["/board", lastUser.lastJoined]);
+    if (lastUser) this.router.navigate(["/board", lastUser.team]);
 
     this.userReady$ = this.usernameSubject.pipe(
       filter((username) => username.length > 0),
@@ -69,7 +69,7 @@ export class JoinComponent implements OnInit, OnDestroy {
     });
 
     if (res) {
-      user.lastJoined = this.boardId; // capture board to local user obj
+      user.team = this.boardId; // capture board to local user obj
       sessionStorage.setItem("user", JSON.stringify(user));
       this.router.navigate(["/board", this.boardId]);
       this.usernameSubject.complete();
@@ -80,7 +80,7 @@ export class JoinComponent implements OnInit, OnDestroy {
     const currentUser = JSON.parse(sessionStorage.getItem("user"));
 
     if (currentUser)
-      this.teamService.updateTeam(currentUser.lastJoined, {
+      this.teamService.updateTeam(currentUser.team, {
         type: "remove",
         member: currentUser.displayName,
       });

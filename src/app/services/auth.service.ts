@@ -18,8 +18,17 @@ export class AuthService {
         email,
         password
       );
-      console.log("Email and password signup success!", value.user);
-      const userData = JSON.parse(JSON.stringify(value.user));
+	  console.log("Email and password signup success!", value.user);
+
+	  /** Deep clone value.user to remove internal properties */  
+	  const userData = JSON.parse(JSON.stringify(value.user));
+
+	  /**
+	   * A user registered with email can only host boards. Joining boards
+	   * hosted by other users as collaborators can only be done through
+	   * anonymous sign-in. By this design, newly registered users
+	   * don't have `displayName` and `photoURL`, while anonymous users do.
+	   * */
       const user = {
         email: userData.email,
         isAnonymous: userData.isAnonymous,
@@ -63,15 +72,21 @@ export class AuthService {
     try {
       const value = await this.afAuth.signInAnonymously();
 
-      // Deep clone value.user object ignoring internal properties
-      const userData = JSON.parse(JSON.stringify(value.user));
+	  const userData = JSON.parse(JSON.stringify(value.user));
+	  
+	   
       const user = {
         email: userData.email,
         isAnonymous: userData.isAnonymous,
         displayName: username,
         photoURL: avatarUrl,
-        uid: userData.uid,
-        lastJoined: "",
+		uid: userData.uid,
+		/**
+		 * ID of board the current user wants to join with userData,
+		 * updated in JoinComponent after this method returns
+		 * @type {string} 
+		*/
+        team: "",
       };
 
       console.log("Anonymous signin success!", user);
