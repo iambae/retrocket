@@ -18,6 +18,7 @@ import { Router } from "@angular/router";
 })
 export class JoinComponent implements OnInit, OnDestroy {
   boardId: string;
+  currentUser: any;
   username: string = "";
   usernameTaken: boolean = false;
   avatarReady: boolean = false;
@@ -33,10 +34,9 @@ export class JoinComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.boardId = window.location.pathname.split("/join/")[1];
-
-    // If user already joined this board, exit join flow
-    let lastUser = JSON.parse(sessionStorage.getItem("user"));
-    if (lastUser) this.router.navigate(["/board", lastUser.team]);
+	this.currentUser = JSON.parse(sessionStorage.getItem("user"));
+	// If user already joined this board, exit join flow and redirect
+    if (this.currentUser) this.router.navigate(["/board", this.currentUser.team]);
 
     this.userReady$ = this.usernameSubject.pipe(
       filter((username) => username.length > 0),
@@ -44,7 +44,8 @@ export class JoinComponent implements OnInit, OnDestroy {
       distinctUntilChanged(),
       withLatestFrom(this.teamService.getTeam(this.boardId)),
       rxMap(([username, team]) => {
-        this.avatarUrl = `https://robohash.org/${username}.png?set=set3`;
+		  // set1: robots with bodies, set2: monsters, set4: cats
+        this.avatarUrl = `https://robohash.org/${username}.png?set=set3`; 
         this.usernameTaken = team.members.includes(username);
         return !this.usernameTaken;
       })
@@ -69,20 +70,18 @@ export class JoinComponent implements OnInit, OnDestroy {
     });
 
     if (res) {
-      user.team = this.boardId; // capture board to local user obj
+      user.team = this.boardId; // save boardId to user data in session storage
       sessionStorage.setItem("user", JSON.stringify(user));
       this.router.navigate(["/board", this.boardId]);
       this.usernameSubject.complete();
     }
   }
 
-  removeCurrentUser() {
-    const currentUser = JSON.parse(sessionStorage.getItem("user"));
-
-    if (currentUser)
-      this.teamService.updateTeam(currentUser.team, {
+  removeCurrentUser() {    
+	if (this.currentUser)
+      this.teamService.updateTeam(this.currentUser.team, {
         type: "remove",
-        member: currentUser.displayName,
+        member: this.currentUser.displayName,
       });
   }
 

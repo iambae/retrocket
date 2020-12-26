@@ -7,6 +7,10 @@ import { Observable } from "rxjs";
 @Injectable({
   providedIn: "root",
 })
+/**
+ * Checks to see if requested board exists in the database;
+ * if it doesn't exist, redirects user to NotFoundComponent
+ */
 export class BoardGuard implements CanActivate {
   constructor(private router: Router, private boardService: BoardService) {}
 
