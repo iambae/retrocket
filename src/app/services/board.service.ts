@@ -28,12 +28,14 @@ export class BoardService {
       );
   }
 
+     /** GET: get board with boardId from firestore */
   getBoard(boardId: string): Observable<Board> {
     return this.boards$.pipe(
       rxMap((boards) => boards.find((board) => board.id === boardId))
     );
   }
 
+     /** GET: get board hosted by user with userId from firestore */
   getBoards(userId: string): Observable<Board[]> {
     return this.boards$.pipe(
       rxMap((boards) => {
@@ -42,6 +44,7 @@ export class BoardService {
     );
   }
 
+     /** ADD: add new board document to board collection */
   addBoard(board: any): string {
     const boardDoc = this.firestoreService
       .collection<Board[]>("boards")
@@ -61,6 +64,7 @@ export class BoardService {
     return id;
   }
 
+     /** UPDATE: update board with boardId in firestore */
   updateBoard(boardId: string, data: any) {
     this.firestoreService
       .doc(`boards/${boardId}`)
@@ -71,6 +75,7 @@ export class BoardService {
       .catch((error) => console.error("Error updating board: ", error));
   }
 
+   /** DELETE: delete board with boardId from firestore */
   deleteBoard(boardId: string) {
     this.firestoreService
       .collection("boards")
