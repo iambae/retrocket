@@ -53,7 +53,7 @@ export class TeamService {
     }
   }
 
-  /* Team ID is made the same as the ID of its corresponding Board to facilitate query  */
+  /* To facilitate query, team is given same ID as that of the board it corresponds to */
   createTeam(boardId: string) {
     this.firestoreService
       .collection<Team[]>("teams")
