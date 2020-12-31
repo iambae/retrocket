@@ -46,12 +46,12 @@ export class BoardService {
 
      /** ADD: add new board document to board collection */
   addBoard(board: any): string {
+	const id = this.firestoreService.createId();
+
     const boardDoc = this.firestoreService
       .collection<Board[]>("boards")
-      .doc<Board>().ref;
-
-    const id = boardDoc.id;
-
+	  .doc<Board>(id).ref;
+	
     boardDoc
       .set({
         ...board,
