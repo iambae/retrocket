@@ -10,17 +10,13 @@ import { CanActivate, Router, UrlTree } from "@angular/router";
  * is registered with email and hence can author boards; 
  * otherwise redirects user to a new auth flow in /start
  */
-export class AnonGuard implements CanActivate {
+export class DashboardGuard implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate(): true | UrlTree {
     const currentUser = JSON.parse(sessionStorage.getItem("user"));
     const canAccessBoardList = currentUser && !currentUser.isAnonymous;
 
-    if (canAccessBoardList) {
-      return true;
-    }
-
-    return this.router.parseUrl("/start");
+    return canAccessBoardList ? true : this.router.parseUrl("/join");
   }
 }

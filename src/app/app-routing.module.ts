@@ -7,7 +7,7 @@ import { BoardComponent } from "./components/board/board.component";
 import { NotFoundComponent } from "./components/not-found/not-found.component";
 import { JoinComponent } from "./components/join/join.component";
 import { AuthGuard } from "./guards/auth.guard";
-import { AnonGuard } from "./guards/anon.guard";
+import { DashboardGuard } from "./guards/dashboard.guard";
 import { BoardGuard } from "./guards/board.guard";
 import { AuthComponent } from "./components/auth/auth.component";
 
@@ -15,7 +15,7 @@ const routes: Routes = [
   {
     path: "dashboard",
     component: DashboardComponent,
-    canActivate: [AnonGuard],
+    canActivate: [DashboardGuard],
   },
   {
     path: "join/:id",
