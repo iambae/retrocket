@@ -1,11 +1,11 @@
   <br>
-  <p align="center"><img width=40% src="src/assets/img/brand/retrocket.png"></p>
+  <p align="center"><a href="https://retrocket-app.web.app"><img width=40% src="src/assets/img/brand/retrocket.png"></a></p>
 
 <h4 align="center">Web app for team Sprint Retrospective meetings, made with simplicity in mind.</h4><br>
 <p align="center"><img src="https://img.shields.io/badge/angular%20-%23DD0031.svg?&style=for-the-badge&logo=angular&logoColor=white"/><img src="https://img.shields.io/badge/firebase%20-%23039BE5.svg?&style=for-the-badge&logo=firebase"/></p>
 
 <p align="center">
-  <a href="">
+  <a href="https://retrocket-app.web.app">
     <img src="https://img.shields.io/badge/status-live-success?style=flat-square">
   </a>
   <a href="https://github.com/iambae/retrocket/graphs/commit-activity">

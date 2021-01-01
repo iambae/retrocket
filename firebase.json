@@ -1,0 +1,13 @@
+{
+  "hosting": {
+    "public": "dist/retrocket",
+    "site": "retrocket-app",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

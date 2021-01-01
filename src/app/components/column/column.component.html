@@ -1,8 +1,7 @@
 <div class="card card-stats mb-4 mb-xl-0">
   <div class="card-body">
     <div
-      class="column"
-      [attr.column-id]="column.id"
+      class="column"     
       [attr.column-order]="column.order"
     >
       <div class="column-header" [style.textAlign]="'center'">
@@ -20,7 +19,7 @@
           [(ngModel)]="column.name"
         />
       </div>
-      <div class="card-list" [attr.column-id]="column.id">
+      <div class="card-list">
         <div *ngFor="let card of cards">
           <app-card [card]="card" (cardEvent)="onCardEvent($event)"></app-card>
         </div>
