@@ -11,8 +11,8 @@
   <a href="https://github.com/iambae/retrocket/graphs/commit-activity">
       <img src="https://img.shields.io/badge/maintained%3F-yes-blue?style=flat-square">
   </a>
-  <a href="https://github.com/iambae/retrocket/commits/master"><img src="https://img.shields.io/badge/commits-38-blueviolet?style=flat-square&logo=github"></a>
-  <a href="">
+  <a href="https://github.com/iambae/retrocket/commits/master"><img src="https://img.shields.io/badge/commits-42-blueviolet?style=flat-square&logo=github"></a>
+  <a href="https://github.com/iambae/retrocket">
     <img src="https://img.shields.io/badge/contributions-welcome-ff69b4.svg?style=flat-square&logo=github">
   </a>
 </p>
