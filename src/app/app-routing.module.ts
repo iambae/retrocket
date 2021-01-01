@@ -37,12 +37,12 @@ const routes: Routes = [
   },
   {
     path: "",
-    redirectTo: "dashboard",
+    redirectTo: "start",
     pathMatch: "full",
   },
   {
     path: "**",
-    redirectTo: "dashboard",
+    redirectTo: "start",
   },
 ];
 
